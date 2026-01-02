@@ -1,0 +1,24 @@
+mat-grid-tile{
+    /* background-color: brown; */
+    margin: 2rem;
+}
+
+#content_grid {
+    display: flex;
+    margin-right: auto;
+    margin-left: 10rem;
+}
+
+.content-spacer{
+    flex:1;
+    width: 1rem;
+}
+
+table{
+    flex: 10;
+    /* border: 5px solid; */
+    flex:auto;
+    border-spacing: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}

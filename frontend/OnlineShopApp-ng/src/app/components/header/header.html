@@ -1,0 +1,25 @@
+<mat-toolbar>
+    <!-- <div > -->
+    <mat-icon>storefront</mat-icon>
+    <span style="font-size: larger;margin-left: 0.5rem;">OnlineShopApp</span>
+
+    <span class="header-spacer"></span>
+    <div class="button-group">
+        <button matButton="elevated" class="header-button">Products</button>
+        <button matButton="elevated" class="header-button">Search</button>
+    </div>
+    <span class="header-spacer"></span>
+    <button matButton class="header-button" [matMenuTriggerFor]="menu">
+        <span>Guest </span>
+        <span class="material-symbols-outlined" style="vertical-align: middle;size: 1rem;">
+            account_circle
+        </span>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+    </mat-menu>
+
+    <!-- </div> -->
+
+</mat-toolbar>

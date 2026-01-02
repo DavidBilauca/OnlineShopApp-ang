@@ -1,0 +1,22 @@
+.header-spacer {
+  flex:1;
+  background-color: rgb(82, 165, 87);
+  
+}
+
+#header-row{
+    display: flex;
+}
+
+.header-button {
+    margin-right: 1rem;
+    font-size: large;
+}
+
+.header-item2 {
+    flex-grow: 2;
+}
+
+.button-group{
+    flex:7;
+}
