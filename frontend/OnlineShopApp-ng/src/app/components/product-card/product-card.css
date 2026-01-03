@@ -1,6 +1,9 @@
 .card {
+  display: inline-flex;
+  margin: 1rem;
   max-width: 20rem;
   background-color: rgba(255, 255, 255, 0.068);
+  min-height: 30rem;
 }
 
 .example-header-image {

@@ -6,7 +6,7 @@ mat-grid-tile{
 #content_grid {
     display: flex;
     margin-right: auto;
-    margin-left: 10rem;
+    margin-left: auto;
 }
 
 .content-spacer{
