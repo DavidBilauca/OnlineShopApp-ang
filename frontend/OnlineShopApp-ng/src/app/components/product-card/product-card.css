@@ -1,23 +1,64 @@
 .card {
-  display: inline-flex;
-  margin: 1rem;
-  max-width: 20rem;
+  /* display: inline-flex; */
+  margin: 0.5rem;
+  max-width: 18rem;
   background-color: rgba(255, 255, 255, 0.068);
   min-height: 30rem;
+  border-radius: 1rem;
 }
 
 .example-header-image {
-    max-width: inherit;
+  max-width: inherit;
   background-image: url('https://material.angular.dev/assets/img/examples/shiba1.jpg');
   background-size: cover;
 }
 
 /* larger icons inside the card actions */
 .card mat-icon {
+  /* color: rgb(187, 35, 35); */
   vertical-align: middle;
   margin: auto;
-  font-size: 2rem;
+  font-size: 1.5rem;
   width: 2rem;
   height: 2rem;
   line-height: 2rem;
+}
+
+mat-card-title {
+  font-size: medium;
+  max-width: 18rem;
+  max-height: 4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0.5rem;
+}
+
+.card-title{
+  font-weight: bold;
+  font-size: medium;
+  max-width: 18rem;
+  max-height: 4rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 0.5rem;
+}
+
+mat-card img {
+  margin-bottom: 1rem;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+}
+
+#product-details {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

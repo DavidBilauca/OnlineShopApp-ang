@@ -36,7 +36,10 @@ export const Categories = {
     Smartphones: Smartphones,
     Headphones: Headphones,
     Smartwatches: Smartwatches,
-    Accessories: Accessories
+    Accessories: Accessories,
+    getCategories: () =>{
+        return [None,Laptops,Smartphones,Headphones,Smartphones,Accessories];
+    }
 }
 
 export const MockProducts:IProduct[] = [

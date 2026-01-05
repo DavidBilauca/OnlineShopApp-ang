@@ -25,5 +25,17 @@ import { IProduct } from '../../../types';
 })
 export class ProductCard {
   productInfo = input.required<IProduct>();
-
+  padd0:string = "padding:0;";
+  border:string = "border:1px solid;"
+  autoMargins:string="margin-left:auto;margin-right:auto;";
+  autoPadd:string="padding:auto;";
+  center:string="padding:auto;";
+  addStyles = (args:Array<string>) =>{
+    var result = "";
+    args.forEach(arg=>result = result.concat(arg));
+    return result;
+  }
+  testStyle = ()=>{
+    return this.padd0.concat(this.border);
+  }
 }

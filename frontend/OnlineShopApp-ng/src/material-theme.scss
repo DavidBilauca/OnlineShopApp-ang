@@ -8,9 +8,13 @@
 
 html {
   height: 100%;
+  // $customTheme : rgb(187, 35, 35);
   @include mat.theme((
+    
     color: (
-      primary: mat.$azure-palette,
+      
+      primary: mat.$blue-palette,
+      // primary: $customTheme,
       tertiary: mat.$blue-palette,
     ),
     typography: Roboto,

@@ -8,29 +8,25 @@ import { MockProducts, Categories } from '../../mockdata';
   selector: 'content-grid',
   imports: [ProductCard],
   template: `
-    <span class="content-spacer"></span>
-    <div id="content-grid">
-      <!-- <span class="content-spacer"></span> -->
-      <!-- <table>
-        <tr>
-        @for (product of products; track $index ){
-        
-          <td>
-            <product-card [productInfo]=" products[$index]"></product-card>
-          </td>
-        }
-        </tr>
-      </table> -->
-      @for (product of products; track $index ){
-            <product-card [productInfo]=" products[$index]"></product-card>
-        }
-      <!-- <span class="content-spacer"></span> -->
-    </div> 
-    `
-  ,
+    <!-- <span class="content-spacer"></span> -->
+    <!-- <div id="content-grid"> -->
+    <!-- <div data-bs-theme="dark"> -->
+      <div class="container-fluid">
+        <div class="row">
+          @for (product of products(); track $index ){
+          <div class="col-sm-2" style= "padding:0;margins:0">
+            <product-card [productInfo]="products()[$index]"></product-card>
+          </div>
+          }
+        </div>
+        <!-- </div> -->
+      </div>
+    <!-- </div> -->
+  `,
   styleUrl: './content-grid.css',
 })
-
 export class ContentGrid {
-  products: IProduct[] = MockProducts;
+  products = input.required<Array<IProduct>>();
+  // products : IProduct[] = this._products()();
+  colStyle:string = "padding:0;margins:0";
 }
