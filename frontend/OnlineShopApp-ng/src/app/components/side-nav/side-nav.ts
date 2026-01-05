@@ -6,7 +6,7 @@ import { NgClass } from "../../../../node_modules/@angular/common/types/_common_
 
 @Component({
   selector: 'side-nav',
-  imports: [MatSlideToggle, NgClass],
+  imports: [MatSlideToggle],
   template: `
   <div class="side-nav" >
     <p>side nav works</p>
