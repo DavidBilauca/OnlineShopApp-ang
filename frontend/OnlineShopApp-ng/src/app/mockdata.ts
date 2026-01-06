@@ -38,7 +38,7 @@ export const Categories = {
     Smartwatches: Smartwatches,
     Accessories: Accessories,
     getCategories: () =>{
-        return [None,Laptops,Smartphones,Headphones,Smartphones,Accessories];
+        return [None,Laptops,Smartphones,Headphones,Smartwatches,Accessories];
     }
 }
 

@@ -11,22 +11,43 @@ import { MockProducts, Categories } from '../../mockdata';
     <!-- <span class="content-spacer"></span> -->
     <!-- <div id="content-grid"> -->
     <!-- <div data-bs-theme="dark"> -->
-      <div class="container-fluid">
-        <div class="row">
-          @for (product of products(); track $index ){
-          <div class="col-sm-2" style= "padding:0;margins:0">
-            <product-card [productInfo]="products()[$index]"></product-card>
-          </div>
-          }
+
+    <div class="container-fluid">
+      <div class="row">
+        @defer (on viewport) {
+           @for (product of products(); track $index ){
+             
+              @if(emptyFilters() || isFiltered(product.category)){
+
+        <div class="col-sm-2" style="padding:0;margins:0">
+          <product-card [productInfo]="products()[$index]"></product-card>
         </div>
-        <!-- </div> -->
+        } } } @placeholder {
+        <h1>No products available, Try again later</h1>
+        } @loading (minimum 2s) {
+        <h1>Loading...</h1>
+        }
       </div>
+      <!-- </div> -->
+    </div>
     <!-- </div> -->
   `,
   styleUrl: './content-grid.css',
 })
 export class ContentGrid {
   products = input.required<Array<IProduct>>();
+  filters = input.required<ICategory[]>();
   // products : IProduct[] = this._products()();
-  colStyle:string = "padding:0;margins:0";
+  colStyle: string = 'padding:0;margins:0';
+
+  emptyFilters = () => {
+    // console.log("filters length: "+this.filters().length);
+    // console.log("filters: "+this.filters());
+    // console.log("filters empty: "+ (this.filters().length == 0).toString());
+    return this.filters().length == 0;
+  };
+
+  isFiltered = (item: ICategory) => {
+    return this.filters().includes(item);
+  };
 }

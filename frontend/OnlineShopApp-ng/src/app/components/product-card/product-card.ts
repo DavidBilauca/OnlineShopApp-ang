@@ -10,13 +10,7 @@ import { IProduct } from '../../../types';
   imports: [
     MatCard,
     MatCardHeader,
-    MatCardTitle,
-    MatCardSubtitle,
     MatCardContent,
-    MatCardMdImage,
-    MatCardActions,
-    MatCardFooter,
-    MatGridTile,
     MatIcon,
     MatButton
   ],

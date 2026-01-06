@@ -1,3 +1,5 @@
+import { Categories } from "./app/mockdata"
+
 export interface IProduct {
     id:string,
     createdTimeStamp?:string,
@@ -6,7 +8,7 @@ export interface IProduct {
     description?:string,
     rating:number = 0,
     imageURL?:string = "",
-    category?:ICategory = "None",
+    category:ICategory = Categories.None,
     isFavourite?:boolean = false,
     isInShoppingCart?:boolean =false
 }

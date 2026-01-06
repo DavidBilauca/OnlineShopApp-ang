@@ -5,35 +5,18 @@ import { ContentGrid } from './components/content-grid/content-grid';
 import { SideNav } from './components/side-nav/side-nav';
 import { ICategory, IProduct } from '../types';
 import { Categories, MockProducts } from './mockdata';
+import { NgOptimizedImage } from '@angular/common';
+// import {} from '../../assets'
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, ContentGrid, SideNav],
+  imports: [RouterOutlet],
   //templateUrl: './app.html',
   template: `
-    <main>
-      <app-header />
-      <div class="container-flex">
-        <div class="row">
-          <div class="col-sm-2">
-            <side-nav [categories]="categories"/>
-          </div>
-           <div class="col-lg-10">
-            <content-grid [products]="products"/>
-          </div>
-        </div>
-      </div>
-      
-      
-      
-    </main>
     <router-outlet />
   `,
-  styleUrl: './app.css',
-  //template:"<h1>hello world<.h1>"
+  styleUrl: './app.css'
 })
 export class App {
-  products:IProduct[] = MockProducts;
-  categories:ICategory[] = Categories.getCategories();
-
+  
 }
