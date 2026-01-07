@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from '../header/header';
 import { ContentGrid } from '../content-grid/content-grid';
@@ -6,6 +6,8 @@ import { SideNav } from '../side-nav/side-nav';
 import { ICategory, IProduct } from '../../../types';
 import { Categories, MockProducts } from '../../mockdata';
 import { NgOptimizedImage } from '@angular/common';
+import { ProductAPI } from '../../services/productAPI';
+
 // import {} from '../../assets'
 
 @Component({
@@ -45,9 +47,18 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrl: './home.css',
 })
 export class Home {
-  products: IProduct[] = MockProducts;
+  productAPIService = inject(ProductAPI);
+
+  products: IProduct[] = [];
   categories: ICategory[] = Categories.getCategories();
   productFilters: ICategory[] = [];
+
+  constructor () {
+    this.productAPIService.getAllProducts().then(result=>{
+      this.products = result;
+    });
+  }
+
 
   setFilters = (event: { c: ICategory; state: boolean }) => {
     if (event.state) {

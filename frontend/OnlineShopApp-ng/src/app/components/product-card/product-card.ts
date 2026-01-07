@@ -4,6 +4,7 @@ import { MatCard,MatCardHeader,MatCardTitle,MatCardSubtitle,MatCardActions,MatCa
 import { MatGridTile } from '@angular/material/grid-list';
 import { MatIcon } from '@angular/material/icon';
 import { IProduct } from '../../../types';
+import { CurrencyPipe, } from '@angular/common';
 
 @Component({
   selector: 'product-card',
@@ -12,7 +13,8 @@ import { IProduct } from '../../../types';
     MatCardHeader,
     MatCardContent,
     MatIcon,
-    MatButton
+    MatButton,
+    CurrencyPipe
   ],
   templateUrl: './product-card.html',
   styleUrl: './product-card.css',
@@ -24,6 +26,7 @@ export class ProductCard {
   autoMargins:string="margin-left:auto;margin-right:auto;";
   autoPadd:string="padding:auto;";
   center:string="padding:auto;";
+
   addStyles = (args:Array<string>) =>{
     var result = "";
     args.forEach(arg=>result = result.concat(arg));

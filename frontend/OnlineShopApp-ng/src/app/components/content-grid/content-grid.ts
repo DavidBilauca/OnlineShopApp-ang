@@ -24,7 +24,7 @@ import { MockProducts, Categories } from '../../mockdata';
         </div>
         } } } @placeholder {
         <h1>No products available, Try again later</h1>
-        } @loading (minimum 2s) {
+        } @loading (minimum 1s) {
         <h1>Loading...</h1>
         }
       </div>

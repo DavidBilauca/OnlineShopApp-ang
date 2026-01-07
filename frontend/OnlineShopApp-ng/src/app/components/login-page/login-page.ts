@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FormGroup,FormControl,ReactiveFormsModule } from '@angular/forms';
+import { FormGroup,FormControl,ReactiveFormsModule,Validators } from '@angular/forms';
 
 
 @Component({
@@ -50,7 +50,8 @@ import { FormGroup,FormControl,ReactiveFormsModule } from '@angular/forms';
           </div>
           <div class="row">
             <div class="col-lg-12" style="padding:2rem;margin: auto;">
-              <input class="form-btn" type="submit" value="Sign-in">
+              <input class="form-btn" type="submit" value="Sign-in" [disabled]="!profileForm.valid">
+              
             </div>
           </div>
         </div>
@@ -62,9 +63,9 @@ import { FormGroup,FormControl,ReactiveFormsModule } from '@angular/forms';
 })
 export class LoginPage {
   profileForm = new FormGroup({
-    email: new FormControl(''),
-    username: new FormControl(''),
-    password: new FormControl('')
+    email: new FormControl('',[Validators.email,Validators.required]),
+    username: new FormControl('',[Validators.required,Validators.minLength(4),Validators.maxLength(30)]),
+    password: new FormControl('',[Validators.minLength(6),Validators.pattern(/[a-zA-Z0-9]*/)])
   });
   email:string = "";
   password:string = "";

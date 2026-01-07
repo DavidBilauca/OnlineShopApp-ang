@@ -12,7 +12,7 @@
             {{productInfo().description}}
         </p>
         <h5 style="margin-bottom: 1rem;">
-            <span style="color: rgb(253, 127, 53);">$ {{ productInfo().price}}</span>
+            <span style="color: rgb(253, 127, 53);">{{ productInfo().price | currency:"RON "}}</span>
         </h5>
         <h6 style="margin-bottom: 1rem;">
             <span style="color:rgb(255, 255, 143);">{{productInfo().rating}} /5</span>
