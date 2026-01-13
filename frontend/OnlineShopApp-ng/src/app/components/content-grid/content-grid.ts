@@ -19,7 +19,7 @@ import { MockProducts, Categories } from '../../mockdata';
              
               @if(emptyFilters() || isFiltered(product.category)){
 
-        <div class="col-sm-2" style="padding:0;margins:0">
+        <div class="col-md-3" style="padding:0;margins:0">
           <product-card [productInfo]="products()[$index]"></product-card>
         </div>
         } } } @placeholder {

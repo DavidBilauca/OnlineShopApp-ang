@@ -27,12 +27,12 @@ import { ProductAPI } from '../../services/productAPI';
       </div>
 
       <app-header />
-      <div class="container-flex">
+      <div class="container-flex" >
         <div class="row">
           <div class="col-lg-12"></div>
         </div>
         <div class="row">
-          <div class="col-sm-2">
+          <div class="col-sm-2" >
             <side-nav [categories]="categories" (toggleEvent)="setFilters($event)" />
           </div>
           <div class="col-lg-8">
