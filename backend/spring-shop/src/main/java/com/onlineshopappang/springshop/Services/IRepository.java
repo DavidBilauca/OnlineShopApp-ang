@@ -1,19 +1,18 @@
-package com.onlineshopappang.springshop.Services.ProductRelated;
-
-import com.onlineshopappang.springshop.Models.ProductRelated.Product;
+package com.onlineshopappang.springshop.Services;
 
 import java.util.UUID;
+import java.util.function.Function;
 
-public interface Repository {
-    void Create(Product entity);
+public interface IRepository<T,R> {
+    void Create(T entity);
 
     void GetAll();
 
     void GetById(UUID entityId);
 
-    void GetByFilter();
+    void GetByFilter(Function<T,R> filter);
 
-    void Update(UUID entityId);
+    void Update(T entity);
 
     void Delete(UUID entityId);
 }

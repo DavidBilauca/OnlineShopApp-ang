@@ -2,10 +2,13 @@ package com.onlineshopappang.springshop.Services.ProductRelated;
 
 import com.onlineshopappang.springshop.Models.ProductRelated.Product;
 import com.onlineshopappang.springshop.Services.IRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 import java.util.function.Function;
 
+@Repository
 public class ProductRepository implements IRepository<Product,Product> {
 
     @Override

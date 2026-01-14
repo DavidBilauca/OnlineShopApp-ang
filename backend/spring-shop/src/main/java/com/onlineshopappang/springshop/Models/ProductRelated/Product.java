@@ -1,9 +1,6 @@
-package com.onlineshopappang.springshop.Models;
-
-import org.springframework.cglib.core.Local;
+package com.onlineshopappang.springshop.Models.ProductRelated;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 public class Product {
@@ -14,7 +11,7 @@ public class Product {
     public UUID Id;
     public LocalDateTime CreatedTimestamp;
     public String Title;
-    public Integer Price;
+    public float Price;
     public Integer Stock;
     public String Description;
     public Float Rating;

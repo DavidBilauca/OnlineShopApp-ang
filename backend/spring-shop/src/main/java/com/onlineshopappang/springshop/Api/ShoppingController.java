@@ -1,4 +1,4 @@
-package com.onlineshopappang.springshop;
+package com.onlineshopappang.springshop.Api;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

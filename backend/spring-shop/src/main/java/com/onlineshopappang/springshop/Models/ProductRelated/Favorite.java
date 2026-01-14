@@ -1,4 +1,4 @@
-package com.onlineshopappang.springshop.Models;
+package com.onlineshopappang.springshop.Models.ProductRelated;
 
 import java.util.UUID;
 
