@@ -1,16 +1,20 @@
 package com.onlineshopappang.springshop.Services;
 
+import com.onlineshopappang.springshop.Models.ProductRelated.Product;
+
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
-public interface IRepository<T,R> {
+
+public interface IRepository<T> {
     void Create(T entity);
 
-    void GetAll();
+    Iterable<T> GetAll();
 
-    void GetById(UUID entityId);
+    T GetById(UUID entityId);
 
-    void GetByFilter(Function<T,R> filter);
+    Iterable<T> GetByFilter(Predicate<T> filter);
 
     void Update(T entity);
 

@@ -9,13 +9,15 @@ export interface IProduct {
     rating:number = 0,
     imageURL?:string = "",
     category:ICategory = Categories.None,
+    categoryId:string;
     isFavourite?:boolean = false,
     isInShoppingCart?:boolean =false
 }
 
 export interface ICategory {
     id:string,
-    name:string
+    name:string,
+    subcategories?:ICategory[]
 }
  
 export interface IUser {

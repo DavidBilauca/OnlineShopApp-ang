@@ -1,10 +1,32 @@
 package com.onlineshopappang.springshop.Models.ProductRelated;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class Category {
     public Category(){}
+    public Category(String name){
+        Id = UUID.randomUUID();
+        Name=name;
+    }
+
     public UUID Id;
     public String Name;
-    public Category[] Subcategories;
+    public ArrayList<Category> Subcategories = new ArrayList<Category>() {
+    };
+
+    public void addSubcategories(Category[] subcategories){
+
+        for(Category c : subcategories){
+            if(
+                    Subcategories.stream()
+                            .anyMatch(existingCateg->existingCateg.Name == c.Name)
+                    == false
+            ) {
+                Subcategories.add(c);
+            }
+        }
+    }
 }

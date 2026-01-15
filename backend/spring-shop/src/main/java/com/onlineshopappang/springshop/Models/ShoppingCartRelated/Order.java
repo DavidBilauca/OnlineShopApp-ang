@@ -30,7 +30,7 @@ public class Order {
     public float totalAmount(){
         float total = 0f;
         for(ListItem item : Items ){
-            total+= item.Product.Price * item.Quantity;
+            total+= item.Product.price * item.Quantity;
         }
         return total;
     }
