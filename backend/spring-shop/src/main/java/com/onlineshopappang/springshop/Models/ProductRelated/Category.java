@@ -1,10 +1,13 @@
 package com.onlineshopappang.springshop.Models.ProductRelated;
 
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 public class Category {
     public Category(){}
     public Category(String name){

@@ -42,7 +42,7 @@ export class ContentGrid {
   colStyle: string = 'padding:0;margins:0';
 
   emptyFilters = (product:IProduct) => {
-    console.log("product card info: "+JSON.stringify(product));
+    //console.log("product card info: "+JSON.stringify(product));
     // console.log("filters: "+this.filters());
     // console.log("filters empty: "+ (this.filters().length == 0).toString());
     return this.filters().length == 0;

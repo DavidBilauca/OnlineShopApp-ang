@@ -7,6 +7,7 @@ import { ICategory, IProduct } from '../../../types';
 import { Categories, MockProducts } from '../../mockdata';
 import { NgOptimizedImage } from '@angular/common';
 import { ProductAPI } from '../../services/productAPI';
+import { CategoryAPI } from '../../services/categoryAPI';
 
 // import {} from '../../assets'
 
@@ -48,15 +49,20 @@ import { ProductAPI } from '../../services/productAPI';
 })
 export class Home {
   productAPIService = inject(ProductAPI);
+  categoryAPIService = inject(CategoryAPI);
 
   products: IProduct[] = [];
-  categories: ICategory[] = Categories.getCategories();
+  categories: ICategory[] = []; 
   productFilters: ICategory[] = [];
 
   constructor () {
+    this.categoryAPIService.getAllCategories().then(result=>{
+      this.categories = result;
+      console.log("home constructor: "+JSON.stringify(result));
+    });
     this.productAPIService.getAllProducts().then(result=>{
       this.products = result;
-      console.log("home constructor: "+JSON.stringify(result));
+      //console.log("home constructor: "+JSON.stringify(result));
     });
   }
 
