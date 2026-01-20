@@ -1,14 +1,14 @@
 package com.onlineshopappang.springshop.Api;
 
+import com.onlineshopappang.springshop.IProductCrudRepository;
 import com.onlineshopappang.springshop.Mappers.CategoryMapper;
 import com.onlineshopappang.springshop.Mappers.ProductMapper;
 import com.onlineshopappang.springshop.Models.ProductRelated.Category;
-import com.onlineshopappang.springshop.Models.ProductRelated.Dtos.CategoryDto;
-import com.onlineshopappang.springshop.Models.ProductRelated.Dtos.ProductDto;
+import com.onlineshopappang.springshop.Models.Dtos.CategoryDto;
+import com.onlineshopappang.springshop.Models.Dtos.ProductDto;
 import com.onlineshopappang.springshop.Models.ProductRelated.Product;
 import com.onlineshopappang.springshop.Services.IRepository;
 import com.onlineshopappang.springshop.Services.IService;
-import com.onlineshopappang.springshop.Services.ProductRelated.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +26,8 @@ public class ShoppingController {
     private final IRepository<Category> _categoryRepository;
     private IService<Product> _productService;
     private IRepository<Product> _productRepository;
+   // private IProductCrudRepository _productCrudRepo;
+
     private ProductMapper productMapper;
     private CategoryMapper categoryMapper;
 
@@ -33,6 +35,8 @@ public class ShoppingController {
     @GetMapping("")
     public ResponseEntity<Iterable<ProductDto>> getAllProducts(){
         var products = _productRepository.GetAll();
+        //var products = _productCrudRepo.findAll();
+
         ArrayList<Product> productsList = new ArrayList<>((Collection) products);
 
         if(productsList == null) return ResponseEntity.notFound().build();

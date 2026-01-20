@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.function.Predicate;
 
 @Repository
-public class ProductRepository implements IRepository<Product> {
+public class ProductRepository implements IRepository<Product>{
 
     @Override
     public void Create(Product entity) {
@@ -24,7 +24,7 @@ public class ProductRepository implements IRepository<Product> {
     @Override
     public Product GetById(UUID entityId) {
         return MockData.MockProducts.stream()
-                .filter(product->product.id == entityId)
+                .filter(product->product.Id == entityId)
                 .toList()
                 .getFirst();
     }
@@ -38,14 +38,14 @@ public class ProductRepository implements IRepository<Product> {
 
     @Override
     public void Update(Product entity) {
-        Product newProduct = GetById(entity.id);
-        newProduct.categoryId = entity.categoryId;
-        newProduct.category = entity.category;
-        newProduct.title = entity.title;
-        newProduct.description = entity.description;
-        newProduct.price = entity.price;
-        newProduct.stock = entity.stock;
-        newProduct.rating = entity.rating;
+        Product newProduct = GetById(entity.Id);
+        newProduct.CategoryId = entity.CategoryId;
+        newProduct.Category = entity.Category;
+        newProduct.Title = entity.Title;
+        newProduct.Description = entity.Description;
+        newProduct.Price = entity.Price;
+        newProduct.Stock = entity.Stock;
+        newProduct.Rating = entity.Rating;
     }
 
     @Override

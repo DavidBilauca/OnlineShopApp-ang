@@ -1,4 +1,4 @@
-package com.onlineshopappang.springshop.Models.ProductRelated.Dtos;
+package com.onlineshopappang.springshop.Models.Dtos;
 
 import com.onlineshopappang.springshop.Models.ProductRelated.Category;
 import lombok.AllArgsConstructor;

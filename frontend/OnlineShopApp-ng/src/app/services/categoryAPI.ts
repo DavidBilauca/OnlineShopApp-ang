@@ -12,8 +12,8 @@ export class CategoryAPI {
 
   async getAllCategories() {
     var data = {};
-      const result = await fetch('https://localhost:7060/api/Shopping', {
-    //const result = await fetch('http://localhost:8080/Shopping/Categories', {
+    //const result = await fetch('https://localhost:7060/api/Shopping', {
+    const result = await fetch('http://localhost:8080/Shopping/Categories', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

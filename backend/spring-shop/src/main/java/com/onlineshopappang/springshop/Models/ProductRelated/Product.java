@@ -1,34 +1,36 @@
 package com.onlineshopappang.springshop.Models.ProductRelated;
 
+import jakarta.persistence.Entity;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
 public class Product {
     public Product(){
-        id = UUID.randomUUID();
-        createdTimestamp = LocalDateTime.now();
+        Id = UUID.randomUUID();
+        CreatedTimestamp = LocalDateTime.now();
     }
     public Product(String title,String description,Category category,float price,int stock,float rating){
-        id = UUID.randomUUID();
-        createdTimestamp = LocalDateTime.now();
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        categoryId = category.Id;
-        this.price = price;
-        this.stock = stock;
-        this.rating = rating;
+        Id = UUID.randomUUID();
+        CreatedTimestamp = LocalDateTime.now();
+        this.Title = title;
+        this.Description = description;
+        this.Category = category;
+        CategoryId = category.Id;
+        this.Price = price;
+        this.Stock = stock;
+        this.Rating = rating;
     }
+    public UUID Id;
+    public LocalDateTime CreatedTimestamp;
+    public String Title;
+    public Integer Stock;
+    public float Price;
 
-    public UUID id;
-    public LocalDateTime createdTimestamp;
-    public String title;
-    public Integer stock;
-    public float price;
-
-    public String description;
-    public Float rating;
-    public String imageURL ="";
-    public UUID categoryId;
-    public Category category;
+    public String Description;
+    public Float Rating;
+    public String ImageURL ="";
+    public UUID CategoryId;
+    public Category Category;
 }
