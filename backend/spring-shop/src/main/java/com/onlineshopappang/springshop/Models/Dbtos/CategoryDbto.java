@@ -1,14 +1,17 @@
 package com.onlineshopappang.springshop.Models.Dbtos;
 
+import com.onlineshopappang.springshop.Models.ProductRelated.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.UUID;
 
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -21,5 +24,10 @@ public class CategoryDbto {
     @Column(name = "Name", nullable = false, length = 50)
     private String name;
 
+    public CategoryDbto(){}
 
+    public CategoryDbto(Category category) {
+        this.id = category.Id;
+        this.name = category.Name;
+    }
 }

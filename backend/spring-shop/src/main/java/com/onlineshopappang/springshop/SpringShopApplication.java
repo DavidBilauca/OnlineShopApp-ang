@@ -15,8 +15,10 @@ public class SpringShopApplication {
         ApplicationContext context = SpringApplication.run(SpringShopApplication.class, args);
         var productRepository = context.getBean(ProductRepository.class);
         var productService = context.getBean(ProductService.class);
-        //IProductCrudRepository productCrudRepositoryImpl;
-        //var productCrudRepository = context.getBean(IProductCrudRepository.class);
+        IProductCrudRepository productCrudRepositoryImpl;
+        var productCrudRepository = context.getBean(IProductCrudRepository.class);
+        ICategoryCrudRepository categoryCrudRepositoryImpl;
+        var categoryCrudRepository = context.getBean(ICategoryCrudRepository.class);
 
         //productService.Create(new Product());
 

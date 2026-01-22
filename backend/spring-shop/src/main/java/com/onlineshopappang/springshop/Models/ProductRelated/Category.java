@@ -1,5 +1,6 @@
 package com.onlineshopappang.springshop.Models.ProductRelated;
 
+import com.onlineshopappang.springshop.Models.Dbtos.CategoryDbto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,11 @@ public class Category {
     public Category(String name){
         Id = UUID.randomUUID();
         Name=name;
+    }
+
+    public Category(CategoryDbto categoryDbto) {
+        Id = categoryDbto.getId();
+        Name = categoryDbto.getName();
     }
 
     @Id

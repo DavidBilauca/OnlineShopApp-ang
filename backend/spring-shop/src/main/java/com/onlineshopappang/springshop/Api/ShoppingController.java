@@ -1,8 +1,9 @@
 package com.onlineshopappang.springshop.Api;
 
+import com.onlineshopappang.springshop.ICategoryCrudRepository;
 import com.onlineshopappang.springshop.IProductCrudRepository;
-import com.onlineshopappang.springshop.Mappers.CategoryMapper;
-import com.onlineshopappang.springshop.Mappers.ProductMapper;
+//import com.onlineshopappang.springshop.Mappers.CategoryMapper;
+//import com.onlineshopappang.springshop.Mappers.ObjectMapper;
 import com.onlineshopappang.springshop.Models.ProductRelated.Category;
 import com.onlineshopappang.springshop.Models.Dtos.CategoryDto;
 import com.onlineshopappang.springshop.Models.Dtos.ProductDto;
@@ -26,10 +27,11 @@ public class ShoppingController {
     private final IRepository<Category> _categoryRepository;
     private IService<Product> _productService;
     private IRepository<Product> _productRepository;
-   // private IProductCrudRepository _productCrudRepo;
+    private IProductCrudRepository _productCrudRepo;
+    private ICategoryCrudRepository _categoryCrudRepo;
 
-    private ProductMapper productMapper;
-    private CategoryMapper categoryMapper;
+    //private final ObjectMapper mapper;
+    //private final CategoryMapper categoryMapper;
 
 
     @GetMapping("")
@@ -41,8 +43,11 @@ public class ShoppingController {
 
         if(productsList == null) return ResponseEntity.notFound().build();
 
+//        var responseData = productsList.stream()
+//                .map(mapper::toDto)
+//                .toList();
         var responseData = productsList.stream()
-                .map(productMapper::toDto)
+                .map(p->new ProductDto(p))
                 .toList();
 
         return new ResponseEntity<Iterable<ProductDto>>(responseData, HttpStatus.OK);
@@ -50,11 +55,12 @@ public class ShoppingController {
 
     @GetMapping("/Categories")
     public ResponseEntity<Iterable<CategoryDto>> getAllCategories() {
-        var categories = new ArrayList<>((Collection<Category>)_categoryRepository.GetAll());
-
+        //var categories = new ArrayList<>((Collection<Category>)_categoryRepository.GetAll());
+        var categoriesDbtos = _categoryCrudRepo.findAll();
+        var categories = categoriesDbtos.stream().map(c->new Category(c)).toList();
         if (categories == null) return ResponseEntity.notFound().build();
         var categoriesDtos = categories.stream()
-                .map(categoryMapper::toDto)
+                .map(c-> new CategoryDto(c))
                 .toList();
 
         return new ResponseEntity<Iterable<CategoryDto>>((Collection) categories, HttpStatus.OK);
@@ -66,14 +72,14 @@ public class ShoppingController {
         Product product = _productRepository.GetById(uuid);
         if(product == null) return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok(productMapper.toDto(product));
+        return ResponseEntity.ok(new ProductDto(product));
     }
 
     @GetMapping("/toggleFavorite/{id}")
     public ResponseEntity<ProductDto> toggleFavorite(@PathVariable String id){
         UUID uuid = UUID.fromString(id);
         Product product = _productRepository.GetById(uuid);
-        if(product != null) return ResponseEntity.ok(productMapper.toDto(product));
+        if(product != null) return ResponseEntity.ok(new ProductDto(product));
         return null;
     }
 }
