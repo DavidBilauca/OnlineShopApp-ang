@@ -35,7 +35,7 @@ public class ProductDto {
         this.rating = product.Rating;
         this.imageURL = product.ImageURL;
         this.categoryId = product.CategoryId;
-        this.category = product.Category;
+        //this.category = product.Category;
     }
 
 }

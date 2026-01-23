@@ -40,7 +40,6 @@ public class ProductRepository implements IRepository<Product>{
     public void Update(Product entity) {
         Product newProduct = GetById(entity.Id);
         newProduct.CategoryId = entity.CategoryId;
-        newProduct.Category = entity.Category;
         newProduct.Title = entity.Title;
         newProduct.Description = entity.Description;
         newProduct.Price = entity.Price;

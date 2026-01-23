@@ -1,10 +1,8 @@
 package com.onlineshopappang.springshop.Models.Dbtos;
 
 import com.onlineshopappang.springshop.Models.ProductRelated.Category;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.annotation.sql.DataSourceDefinition;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,16 +13,23 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "Categories")
+@Table(name = "categories")
 public class CategoryDbto {
     @Id
-    @Column(name = "Id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private UUID id;
+    public void setId(Long id) {
+        this.id = UUID.fromString(id.toString());
+    }
 
-    @Column(name = "Name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    public CategoryDbto(){}
+
+    public CategoryDbto() {
+
+    }
 
     public CategoryDbto(Category category) {
         this.id = category.Id;
