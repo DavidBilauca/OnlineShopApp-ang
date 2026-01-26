@@ -1,12 +1,16 @@
 package com.onlineshopappang.springshop.Models.ProductRelated;
 
 import com.onlineshopappang.springshop.Models.Dbtos.ProductDbto;
-import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
+@Getter
+@Setter
+@AllArgsConstructor
 public class Product {
 
     public UUID Id;
@@ -27,7 +31,7 @@ public class Product {
     }
     public Product(ProductDbto product) {
         //Category = product.getCategoryId();
-        CategoryId = product.getCategoryId();
+        CategoryId = UUID.randomUUID();
         CreatedTimestamp = product.getCreatedTimestamp();
         Description = product.getDescription();
         Id = product.getId();

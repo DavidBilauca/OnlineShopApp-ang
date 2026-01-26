@@ -2,6 +2,8 @@ package com.onlineshopappang.springshop.Api;
 
 import com.onlineshopappang.springshop.ICategoryCrudRepository;
 import com.onlineshopappang.springshop.IProductCrudRepository;
+import com.onlineshopappang.springshop.Models.Dbtos.CategoryDbto;
+import com.onlineshopappang.springshop.Models.Dbtos.ProductDbto;
 import com.onlineshopappang.springshop.Models.ProductRelated.Category;
 import com.onlineshopappang.springshop.Models.Dtos.CategoryDto;
 import com.onlineshopappang.springshop.Models.Dtos.ProductDto;
@@ -14,7 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin
@@ -33,51 +36,33 @@ public class ShoppingController {
     @Autowired
     private ICategoryCrudRepository _categoryCrudRepo;
 
+
     //private final ObjectMapper mapper;
     //private final CategoryMapper categoryMapper;
 
     @GetMapping("")
     public ResponseEntity<Iterable<ProductDto>> getAllProducts(){
-        // products = _productRepository.GetAll();
-        var productDbtos = _productCrudRepo.findAll();
+//       var products = _productRepository.GetAll();
+       List<ProductDbto> productDbtos = _productCrudRepo.findAll();
+       if(productDbtos.stream().count() == 0 || productDbtos == null)
+           return ResponseEntity.notFound().build();
 
-        if((long) productDbtos.size() == 0 ) return ResponseEntity.notFound().build();
+       var products = productDbtos.stream().map(dbto-> new Product(dbto)).toList();
+       var productsDtos = products.stream().map(p->new ProductDto(p)).toList();
 
-//        ArrayList<Product> productsList = new ArrayList<Product>((Collection<Product>) products);
-        var products = productDbtos.stream()
-                .map(p->new Product(p))
-                .toList();
-
-//        if(products == null) return ResponseEntity.notFound().build();
-
-//        var responseData = productsList.stream()
-//                .map(mapper::toDto)
-//                .toList();
-//        var responseData = productsList.stream()
-//                .map(p->new ProductDto(p))
-//                .toList();
-        var responseData = products.stream()
-                .map(p->new ProductDto(p))
-                .toList();
-
-        return new ResponseEntity<Iterable<ProductDto>>(responseData, HttpStatus.OK);
+       return new ResponseEntity<Iterable<ProductDto>>(productsDtos, HttpStatus.OK);
     }
 
     @GetMapping("/Categories")
     public ResponseEntity<Iterable<CategoryDto>> getAllCategories() {
-        var categoriesDbtos = _categoryCrudRepo.findAll();
+        List<CategoryDbto> categoryDbtos = _categoryCrudRepo.findAll();
+        if(categoryDbtos.stream().count()==0 || categoryDbtos == null)
+            return ResponseEntity.notFound().build();
 
-        if((long) categoriesDbtos.size() == 0 ) return ResponseEntity.notFound().build();
+        var categories = categoryDbtos.stream().map(dbto->new Category(dbto)).toList();
+        var categoryDtos = categories.stream().map(c->new CategoryDto(c)).toList();
 
-        var categories = categoriesDbtos.stream().map(
-                c->new Category(c)
-        ).toList();
-        if (categories == null) return ResponseEntity.notFound().build();
-        var categoriesDtos = categories.stream()
-                .map(c-> new CategoryDto(c))
-                .toList();
-
-        return new ResponseEntity<Iterable<CategoryDto>>((Collection) categories, HttpStatus.OK);
+        return new ResponseEntity<Iterable<CategoryDto>>(categoryDtos, HttpStatus.OK);
     }
 
         @GetMapping("/{id}")

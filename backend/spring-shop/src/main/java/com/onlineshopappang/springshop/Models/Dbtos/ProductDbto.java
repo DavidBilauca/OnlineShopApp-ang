@@ -1,34 +1,35 @@
 package com.onlineshopappang.springshop.Models.Dbtos;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "products")
+@Table(name = "products", indexes = {@Index(name = "products_pkey",
+        columnList = "id",
+        unique = true)})
 public class ProductDbto {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    public void setId(Long id) {
-        this.id = UUID.fromString(id.toString());
-    }
-
     @Column(name = "created_timestamp", nullable = false)
     private OffsetDateTime createdTimestamp;
-
-    public LocalDateTime getCreatedTimestamp() {
-        return LocalDateTime.parse(createdTimestamp.toString());
+    public LocalDateTime getCreatedTimestamp(){
+        var zonedTime = createdTimestamp.atZoneSameInstant(ZoneId.of("Europe/Athens"));
+        return zonedTime.toLocalDateTime();
     }
 
     @Column(name = "title", nullable = false, length = 100)
@@ -36,20 +37,16 @@ public class ProductDbto {
 
     @Column(name = "stock", precision = 10, scale = 2)
     private BigDecimal stock;
+
     public Integer getStock(){
-        //DecimalFormat decFormatter = new DecimalFormat();
-        //decFormatter.setMaximumFractionDigits(1);
-        Integer stockInt = Integer.parseInt(rating.toString()) ;
-        return stockInt;
+        //return Integer.parseInt(stock.toString());
+        return Integer.parseInt(stock.toString().split("\\.")[0]);
     }
 
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
-    public float getPrice(){
-        DecimalFormat decFormatter = new DecimalFormat();
-        decFormatter.setMaximumFractionDigits(2);
-        Float priceInFloat = Float.parseFloat(decFormatter.format(price)) ;
-        return priceInFloat;
+    public Float getPrice(){
+        return Float.parseFloat(price.toString());
     }
 
     @Column(name = "description", length = 300)
@@ -57,11 +54,8 @@ public class ProductDbto {
 
     @Column(name = "rating", precision = 2, scale = 1)
     private BigDecimal rating;
-    public float getRating(){
-        DecimalFormat decFormatter = new DecimalFormat();
-        decFormatter.setMaximumFractionDigits(1);
-        Float ratingInFloat = Float.parseFloat(decFormatter.format(rating)) ;
-        return ratingInFloat;
+    public Float getRating(){
+        return Float.parseFloat(rating.toString());
     }
 
     @Column(name = "image_url", length = Integer.MAX_VALUE)
@@ -69,6 +63,10 @@ public class ProductDbto {
 
     @Column(name = "category_id", nullable = false)
     private UUID categoryId;
+
+    public ProductDbto() {
+
+    }
 
 
 }

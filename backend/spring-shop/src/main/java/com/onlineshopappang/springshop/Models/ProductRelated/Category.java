@@ -1,7 +1,6 @@
 package com.onlineshopappang.springshop.Models.ProductRelated;
 
 import com.onlineshopappang.springshop.Models.Dbtos.CategoryDbto;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,9 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor

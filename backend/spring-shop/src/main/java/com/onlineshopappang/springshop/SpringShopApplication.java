@@ -1,15 +1,9 @@
 package com.onlineshopappang.springshop;
 
-import com.onlineshopappang.springshop.Models.Dbtos.ProductDbto;
-import com.onlineshopappang.springshop.Services.ProductRelated.ProductRepository;
-import com.onlineshopappang.springshop.Services.ProductRelated.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import java.io.OutputStreamWriter;
-import java.util.List;
 
 @SpringBootApplication
 public class SpringShopApplication {
