@@ -58,7 +58,7 @@ export class Home {
   constructor () {
     this.categoryAPIService.getAllCategories().then(result=>{
       this.categories = result;
-      console.log("home constructor: "+JSON.stringify(result));
+      // console.log("home constructor: "+JSON.stringify(result));
     });
     this.productAPIService.getAllProducts().then(result=>{
       this.products = result;

@@ -31,7 +31,7 @@ public class Product {
     }
     public Product(ProductDbto product) {
         //Category = product.getCategoryId();
-        CategoryId = UUID.randomUUID();
+        CategoryId = product.getCategoryId();
         CreatedTimestamp = product.getCreatedTimestamp();
         Description = product.getDescription();
         Id = product.getId();
