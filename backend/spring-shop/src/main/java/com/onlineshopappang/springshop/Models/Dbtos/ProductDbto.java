@@ -1,25 +1,21 @@
 package com.onlineshopappang.springshop.Models.Dbtos;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "products", indexes = {@Index(name = "products_pkey",
-        columnList = "id",
-        unique = true)})
+@Table(name = "products")
 public class ProductDbto {
     @Id
     @Column(name = "id", nullable = false)
@@ -37,7 +33,6 @@ public class ProductDbto {
 
     @Column(name = "stock", precision = 10, scale = 2)
     private BigDecimal stock;
-
     public Integer getStock(){
         //return Integer.parseInt(stock.toString());
         return Integer.parseInt(stock.toString().split("\\.")[0]);
@@ -61,12 +56,10 @@ public class ProductDbto {
     @Column(name = "image_url", length = Integer.MAX_VALUE)
     private String imageUrl;
 
-    @Column(name = "category_id", nullable = false)
-    private UUID categoryId;
-
-    public ProductDbto() {
-
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "category_id", nullable = false)
+    private CategoryDbto category;
 
 
 }

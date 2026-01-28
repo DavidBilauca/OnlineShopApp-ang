@@ -1,4 +1,4 @@
-package com.onlineshopappang.springshop;
+package com.onlineshopappang.springshop.Services.CrudRepositories;
 
 import com.onlineshopappang.springshop.Models.Dbtos.ProductDbto;
 import org.springframework.data.jpa.repository.JpaRepository;

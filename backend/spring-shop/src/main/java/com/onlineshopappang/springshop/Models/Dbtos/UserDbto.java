@@ -12,14 +12,17 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
-public class CategoryDbto {
+@Table(name = "users")
+public class UserDbto {
     @Id
     @Column(name = "id", nullable = false)
     private UUID id;
 
-    @Column(name = "name", nullable = false, length = 50)
-    private String name;
+    @Column(name = "username", nullable = false, length = 50)
+    private String username;
+
+    @Column(name = "email", nullable = false, length = 254)
+    private String email;
 
 
 }
