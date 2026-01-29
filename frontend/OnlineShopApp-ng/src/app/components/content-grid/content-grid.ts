@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 import { ProductCard } from '../product-card/product-card';
-import { ICategory, IProduct } from '../../../types';
+import { Filters, ICategory, IProduct, IUser } from '../../../types';
 import { MockProducts, Categories } from '../../mockdata';
 import { JsonPipe } from '@angular/common';
 import { ProductListFormat } from '../product-list-format/product-list-format';
@@ -41,7 +41,7 @@ import { MatIcon } from '@angular/material/icon';
           <product-card [productInfo]="products()[$index]"></product-card>
         </div> -->
                 <div class="col-md-3" style="padding:0;margins:0">
-                  <product-card [productInfo]="products()[$index]"></product-card>
+                  <product-card [productInfo]="products()[$index]" [userInfo]="userInfo()"></product-card>
                 </div>
               }
             }
@@ -57,7 +57,7 @@ import { MatIcon } from '@angular/material/icon';
             @for (product of products(); track $index) {
               @if (emptyFilters(product) || isFiltered(product)) {
                 <div class="row" style="padding:0;margins:0">
-                  <product-list-format [productInfo]="products()[$index]"></product-list-format>
+                  <product-list-format [productInfo]="products()[$index]" [userInfo]="userInfo()"></product-list-format>
                 </div>
               }
             }
@@ -77,7 +77,8 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class ContentGrid {
   products = input.required<Array<IProduct>>();
-  filters = input.required<ICategory[]>();
+  filters = input.required<Filters>();
+  userInfo = input.required<IUser>();
   colStyle: string = 'padding:0;margins:0';
   productViewStyle: ViewStyle = ViewStyle.Grid;
 
@@ -96,11 +97,11 @@ export class ContentGrid {
     //console.log("product card info: "+JSON.stringify(product));
     // console.log("filters: "+this.filters());
     // console.log("filters empty: "+ (this.filters().length == 0).toString());
-    return this.filters().length == 0;
+    return this.filters().categories.length == 0;
   };
 
   isFiltered = (item: IProduct) => {
-    return this.filters()
+    return this.filters().categories
       .map((category) => category.id)
       .includes(item.categoryId);
   };

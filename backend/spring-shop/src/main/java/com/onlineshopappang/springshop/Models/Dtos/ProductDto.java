@@ -28,6 +28,7 @@ public class ProductDto {
     }
 
     public ProductDto(Product product) {
+        this.id = product.Id;
         this.createdTimestamp = product.CreatedTimestamp;
         this.title = product.Title;
         this.description = product.Description;

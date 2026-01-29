@@ -1,9 +1,10 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { IProduct } from '../../../types';
+import { IProduct, IUser } from '../../../types';
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { ProductAPI } from '../../services/productAPI';
 
 @Component({
   selector: 'product-list-format',
@@ -44,7 +45,10 @@ import { MatButton } from '@angular/material/button';
             <div class="container-fluid" [style]="addStyles([autoMargins])">
               
               <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
-                <button matButton><mat-icon>favorite</mat-icon></button>
+                <button matButton (click)="toggleFavorite()">
+                @if(favorite==''){<mat-icon  fontIcon="favorite"></mat-icon>}
+                @else {<mat-icon class="favorite-set" fontIcon="favorite"></mat-icon>}
+            </button>
               </div>
               <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
                 <span style="height: 0.5rem;"></span>
@@ -70,13 +74,43 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './product-list-format.css',
 })
 export class ProductListFormat {
+  productApi = inject(ProductAPI);
   productInfo = input.required<IProduct>();
+  userInfo = input.required<IUser>();
+  favorite: string = '';
+  
   padd0: string = 'padding:0;';
   border: string = 'border:1px solid;';
   autoMargins: string = 'margin-left:auto;margin-right:auto;margin-bottom:2rem';
   autoPadd: string = 'padding:auto;';
   fitWidth:string='width:auto;';
   center: string = 'padding:auto;';
+
+  ngOnChanges() {
+    if (this.userInfo().favorites.filter((fav) => fav.id == this.productInfo().id).length > 0) {
+      console.log('Product card: ' + this.productInfo().title + ' is set to fav');
+      this.favorite = 'favorite-set';
+    }
+  }
+
+  toggleFavorite() {
+    // console.log('toggle favorite prevstate: ' + this.favorite);
+    // console.log('toggle favorite product id: ' + JSON.stringify(this.productInfo()));
+    // console.log('toggle favorite user id: ' + JSON.stringify(this.userInfo()));
+    if(this.userInfo().id == "") {
+        console.log("Sign in to add favorites");
+        return;
+    }
+
+    if(this.favorite == "") this.favorite="favorite-set";
+    else  this.favorite="";
+
+    this.productApi.setFavorite(this.productInfo().id, this.userInfo().id).then(result=>{
+        console.log("setFavorite result: "+result);
+        if (result) this.favorite = 'favorite-set';
+             else this.favorite = '';
+    });
+  }
 
   addStyles = (args: Array<string>) => {
     var result = '';

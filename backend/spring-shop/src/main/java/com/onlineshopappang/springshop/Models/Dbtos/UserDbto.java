@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Getter
@@ -23,6 +24,9 @@ public class UserDbto {
 
     @Column(name = "email", nullable = false, length = 254)
     private String email;
+
+    @Column(name="favorites")
+    private ArrayList<UUID> favorites;
 
 
 }

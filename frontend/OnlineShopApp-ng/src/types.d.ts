@@ -22,13 +22,13 @@ export interface ICategory {
  
 export interface IUser {
     id:string,
-    authId:string,
+    authId?:string,
     username:string,
     email:string,
     shoppingCart?: IListItem[],
     billingInfo?: IBillingInfo[],
     deliveryInfo?: IDeliveryInfo[],
-    favorites?: IProduct[],
+    favorites: IProduct[] = [],
     orders?: IOrder[]
 
 }  
@@ -78,7 +78,12 @@ export interface IOrder {
     totalAmount: number
 }
 
-export enum OrderStatus {
+export interface Filters{
+    categories:ICategory[],
+    viewMode:string
+  }
+
+export const enum OrderStatus {
     Created,
     Processing,
     Shipped,
@@ -86,3 +91,4 @@ export enum OrderStatus {
     Cancelled,
     Returned
 }
+

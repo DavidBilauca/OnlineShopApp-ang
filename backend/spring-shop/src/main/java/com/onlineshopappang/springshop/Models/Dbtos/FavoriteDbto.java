@@ -1,6 +1,7 @@
 package com.onlineshopappang.springshop.Models.Dbtos;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -28,4 +30,16 @@ public class FavoriteDbto {
     private UserDbto user;
 
 
+    public FavoriteDbto() {
+
+    }
+//    public FavoriteDbto(UUID productId, UUID userId) {
+//        this.id = UUID.randomUUID();
+//        this.
+//    }
+public FavoriteDbto(ProductDbto product, UserDbto user) {
+        this.id = UUID.randomUUID();
+        this.product = product;
+        this.user = user;
+    }
 }

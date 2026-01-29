@@ -30,21 +30,24 @@ export class ProductAPI {
     return data as IProduct[];
   }
 
-  async setFavorite(productId:string){
-    var favoriteState:boolean = false;
+  async setFavorite(productId:string,userId:string){
+    var favoriteState;
     //  const result = await fetch('https://localhost:7060/api/Shopping', {
     const result = await fetch('http://localhost:8080/Shopping/toggleFavorite/'+productId, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
+      body:userId
     })
       .then((response) => {
-        favoriteState = (response.status == HttpStatusCode.Ok);
+        favoriteState = response.json();
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        favoriteState = false;
       });
-      return favoriteState;
+      return favoriteState as unknown as boolean;
   }
+  
 }

@@ -3,17 +3,20 @@ import { RouterOutlet } from '@angular/router';
 import { Header } from '../header/header';
 import { ContentGrid } from '../content-grid/content-grid';
 import { SideNav } from '../side-nav/side-nav';
-import { ICategory, IProduct } from '../../../types';
+import {Filters, ICategory, IProduct, IUser } from '../../../types';
 import { Categories, MockProducts } from '../../mockdata';
 import { NgOptimizedImage } from '@angular/common';
 import { ProductAPI } from '../../services/productAPI';
 import { CategoryAPI } from '../../services/categoryAPI';
+import { UserAPI } from '../../services/userAPI';
+import { ListViewer } from "../list-viewer/list-viewer";
+import { D } from '@angular/cdk/keycodes';
 
 // import {} from '../../assets'
 
 @Component({
   selector: 'home',
-  imports: [RouterOutlet, Header, ContentGrid, SideNav, NgOptimizedImage],
+  imports: [RouterOutlet, Header, ContentGrid, SideNav, NgOptimizedImage, ListViewer],
   template: `
     <main>
       <div class="hero">
@@ -27,7 +30,7 @@ import { CategoryAPI } from '../../services/categoryAPI';
         />
       </div>
 
-      <app-header />
+      <app-header [userInfo]="defaultUser" (favorites)="getFavorites($event)"/>
       <div class="container-flex" >
         <div class="row">
           <div class="col-lg-12"></div>
@@ -36,9 +39,17 @@ import { CategoryAPI } from '../../services/categoryAPI';
           <div class="col-sm-2" >
             <side-nav [categories]="categories" (toggleEvent)="setFilters($event)" />
           </div>
-          <div class="col-lg-8">
-            <content-grid [products]="products" [filters]="productFilters" />
-          </div>
+          @if(displayHome()){
+            <div class="col-lg-8">
+              <content-grid [products]="products" [filters]="filters" [userInfo]="defaultUser" />
+            </div>
+          }
+          @if(displayFavorites()){
+            <div class="col-lg-8">
+              <list-viewer [items]="this.defaultUser.favorites" [filters]="filters" [userInfo]="defaultUser" />
+            </div>
+          }
+          
           <div class="col-sm-2"></div>
         </div>
       </div>
@@ -48,21 +59,50 @@ import { CategoryAPI } from '../../services/categoryAPI';
   styleUrl: './home.css',
 })
 export class Home {
+
   productAPIService = inject(ProductAPI);
   categoryAPIService = inject(CategoryAPI);
+  userAPIService = inject (UserAPI);
+
+  defaultUser :IUser;
 
   products: IProduct[] = [];
+  favorites:IProduct[]=[];
   categories: ICategory[] = []; 
-  productFilters: ICategory[] = [];
+  filters: Filters = {categories:[],viewMode:""};
+
+  displayedPage: DisplayedPage = DisplayedPage.Home;
+  displayHome = () => this.displayedPage == DisplayedPage.Home;
+  displayFavorites = () => this.displayedPage == DisplayedPage.Favorites;
 
   constructor () {
+    const nullUser: IUser = {
+      id:"",
+      email:"",
+      username:"",
+      favorites:[]
+    };
+
+    this.defaultUser = nullUser;
+    //!!! update backend to retrieve the authenticated user after auth implementation
+    this.userAPIService.getDefaultUser().then(result=>{
+      if(result != null)
+        this.defaultUser = result;
+
+      this.userAPIService.getFavorites(this.defaultUser.id).then(result=>{
+        this.defaultUser.favorites = result;
+        console.log(JSON.stringify(result));
+      })
+
+    });
+
     this.categoryAPIService.getAllCategories().then(result=>{
       this.categories = result;
       // console.log("home constructor: "+JSON.stringify(result));
     });
     this.productAPIService.getAllProducts().then(result=>{
       this.products = result;
-      //console.log("home constructor: "+JSON.stringify(result));
+      //console.log("home constructor: "+JSON.stringify(result.map(p=>p.id)));
     });
   }
 
@@ -70,11 +110,24 @@ export class Home {
   setFilters = (event: { c: ICategory; state: boolean }) => {
     if (event.state) {
       //category is to be added and is not in the list
-      if (!this.productFilters.includes(event.c)) this.productFilters.push(event.c);
+      if (!this.filters.categories.includes(event.c)) this.filters.categories.push(event.c);
     } else {
       //category is to be deleted and is in the list
-      if (this.productFilters.includes(event.c))
-        this.productFilters = this.productFilters.filter((element) => element != event.c);
+      if (this.filters.categories.includes(event.c))
+        this.filters.categories = this.filters.categories.filter((element) => element != event.c);
     }
   };
+
+  getFavorites(event:void){
+    this.displayedPage = DisplayedPage.Favorites;
+  }
+
+  
+
+}
+const enum DisplayedPage {
+  Home,
+  Favorites,
+  Settings,
+  Search
 }
