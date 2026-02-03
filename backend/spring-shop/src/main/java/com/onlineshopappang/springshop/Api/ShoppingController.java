@@ -2,19 +2,19 @@ package com.onlineshopappang.springshop.Api;
 
 import com.onlineshopappang.springshop.Models.Dbtos.FavoriteDbto;
 import com.onlineshopappang.springshop.Models.Dbtos.UserDbto;
+import com.onlineshopappang.springshop.Models.Dtos.ListItemDto;
 import com.onlineshopappang.springshop.Models.Dtos.UserDto;
+import com.onlineshopappang.springshop.Models.ShoppingCartRelated.ListItem;
 import com.onlineshopappang.springshop.Models.UserRelated.User;
-import com.onlineshopappang.springshop.Services.CrudRepositories.ICategoryCrudRepository;
-import com.onlineshopappang.springshop.Services.CrudRepositories.IFavoriteCrudRepository;
-import com.onlineshopappang.springshop.Services.CrudRepositories.IProductCrudRepository;
+import com.onlineshopappang.springshop.Services.CrudRepositories.*;
 import com.onlineshopappang.springshop.Models.Dbtos.CategoryDbto;
 import com.onlineshopappang.springshop.Models.Dbtos.ProductDbto;
 import com.onlineshopappang.springshop.Models.ProductRelated.Category;
 import com.onlineshopappang.springshop.Models.Dtos.CategoryDto;
 import com.onlineshopappang.springshop.Models.Dtos.ProductDto;
 import com.onlineshopappang.springshop.Models.ProductRelated.Product;
-import com.onlineshopappang.springshop.Services.CrudRepositories.IUserCrudRepository;
 import com.onlineshopappang.springshop.Services.FavoriteService;
+import com.onlineshopappang.springshop.Services.ListItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,8 +44,11 @@ public class ShoppingController {
     @Autowired
     private IUserCrudRepository _userRepo;
     @Autowired
+    private IListItemCrudRepository _listItemRepo;
+    @Autowired
     private FavoriteService _favoriteService;
-
+    @Autowired
+    private ListItemService _listItemService;
 
     //private final ObjectMapper mapper;
     //private final CategoryMapper categoryMapper;
@@ -121,7 +124,52 @@ public class ShoppingController {
             }
             return ResponseEntity.ok(true);
         }
+    }
 
+    @PostMapping("/toggleCartItem/{productId}")
+    public ResponseEntity<Boolean> toggleCartItem(@PathVariable String productId,@RequestBody String userId) throws Exception
+    {
+        UUID productUuid = UUID.fromString(productId);
+        UUID userUuid = UUID.fromString(userId);
+        var cartItem = _listItemRepo.findByProductId(productUuid);
+        //if product is set to favorite then toggle to un-favorite
+        if(cartItem.isPresent()){
+            _listItemRepo.delete(cartItem.get());
+            //returns false to toggle cartItem to false on the frontend if it is already added
+            return ResponseEntity.ok(false);
+            //return ResponseEntity.notFound().build();
+        }
+        else {
+            try{
+                _listItemService.save(productUuid,userUuid,1);
+            } catch (Exception e){
+                return ResponseEntity.notFound().eTag(e.getMessage()).build();
+            }
+            return ResponseEntity.ok(true);
+        }
+    }
+    @PutMapping("updateQuantity/{listItemId}")
+    public ResponseEntity<ListItemDto> updateQuantity(@PathVariable String listItemId,@RequestBody Integer quantity) {
+        UUID listItemUuid = UUID.fromString(listItemId);
+        var cartItemOpt = _listItemRepo.findById(listItemUuid);
+        if(cartItemOpt.isPresent()){
+            if(quantity <= 0){
+                ListItemDto returnObj = new ListItemDto(new ListItem(cartItemOpt.get()));
+                returnObj.setQuantity(0);
+                _listItemRepo.delete(cartItemOpt.get());
+                return ResponseEntity.ok(returnObj);
+            }
+            try{
+                _listItemRepo.updateQuantity(cartItemOpt.get().getId(),quantity);
+            }catch(Exception e){
+                return ResponseEntity.notFound().eTag(e.getMessage()).build();
+            }
+            ListItemDto returnObj = new ListItemDto(
+                    new ListItem(cartItemOpt.get()));
+            returnObj.setQuantity(quantity);
+            return ResponseEntity.ok(returnObj);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/favorites/{userId}")

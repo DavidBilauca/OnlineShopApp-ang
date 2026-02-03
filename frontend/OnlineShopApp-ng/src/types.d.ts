@@ -25,7 +25,7 @@ export interface IUser {
     authId?:string,
     username:string,
     email:string,
-    shoppingCart?: IListItem[],
+    shoppingCart: IListItem[],
     billingInfo?: IBillingInfo[],
     deliveryInfo?: IDeliveryInfo[],
     favorites: IProduct[] = [],

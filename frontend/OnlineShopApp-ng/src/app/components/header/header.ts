@@ -18,10 +18,19 @@ import { UserAPI } from '../../services/userAPI';
 
       <span class="header-spacer"></span>
       <div class="button-group">
-        <button matButton="elevated" class="header-button">Products</button>
+        @if(activePage()==0){
+          <button matButton="elevated" class="header-button" id="active-page">Products</button>
+        }
+        @else {
+          <button matButton="elevated" class="header-button" (click)="goToHome()">Products</button>
+        }
+        
         <button matButton="elevated" class="header-button">Search</button>
       </div>
       <span class="header-spacer"></span>
+      <button matButton class="header-button" (click)="handleOpenShoppingCart()">
+        <mat-icon  fontIcon="shopping_basket"></mat-icon>
+      </button>
       <button matButton class="header-button" [matMenuTriggerFor]="menu">
         <span>
         {{username}}
@@ -49,9 +58,13 @@ import { UserAPI } from '../../services/userAPI';
   styleUrl: './header.css',
 })
 export class Header {
+
   userAPIService = inject(UserAPI);
   userInfo = input.required<IUser>();
-  favorites = output<void>();
+  activePage = input.required<number>();
+  renderHomePage = output<void>();
+  renderFavorites = output<void>();
+  renderShoppingCart = output<void>();
   username:string = "Guest";
   
 
@@ -66,7 +79,16 @@ ngOnChanges(){
 
   showFavoritesList(){
     if(this.userSignedIn())
-      this.favorites.emit();
+      this.renderFavorites.emit();
+  }
+
+  handleOpenShoppingCart() {
+    if(this.userSignedIn())
+      this.renderShoppingCart.emit();
+  }
+
+  goToHome(){
+    this.renderHomePage.emit();
   }
 
 }

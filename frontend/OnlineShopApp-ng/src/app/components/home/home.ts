@@ -11,12 +11,13 @@ import { CategoryAPI } from '../../services/categoryAPI';
 import { UserAPI } from '../../services/userAPI';
 import { ListViewer } from "../list-viewer/list-viewer";
 import { D } from '@angular/cdk/keycodes';
+import { ShoppingCart } from "../shopping-cart/shopping-cart";
 
 // import {} from '../../assets'
 
 @Component({
   selector: 'home',
-  imports: [RouterOutlet, Header, ContentGrid, SideNav, NgOptimizedImage, ListViewer],
+  imports: [RouterOutlet, Header, ContentGrid, SideNav, NgOptimizedImage, ListViewer, ShoppingCart],
   template: `
     <main>
       <div class="hero">
@@ -30,7 +31,7 @@ import { D } from '@angular/cdk/keycodes';
         />
       </div>
 
-      <app-header [userInfo]="defaultUser" (favorites)="getFavorites($event)"/>
+      <app-header [userInfo]="defaultUser" [activePage]="this.displayedPage" (renderFavorites)="renderFavorites($event)" (renderShoppingCart)="renderShoppingCart($event)" (renderHomePage)="renderHomePage($event)"/>
       <div class="container-flex" >
         <div class="row">
           <div class="col-lg-12"></div>
@@ -49,6 +50,11 @@ import { D } from '@angular/cdk/keycodes';
               <list-viewer [items]="this.defaultUser.favorites" [filters]="filters" [userInfo]="defaultUser" />
             </div>
           }
+          @if(displayShoppingCart()){
+            <div class="col-lg-8">
+              <shopping-cart [items]="this.defaultUser.shoppingCart" [userInfo]="defaultUser"/>
+            </div>
+          }
           
           <div class="col-sm-2"></div>
         </div>
@@ -59,7 +65,6 @@ import { D } from '@angular/cdk/keycodes';
   styleUrl: './home.css',
 })
 export class Home {
-
   productAPIService = inject(ProductAPI);
   categoryAPIService = inject(CategoryAPI);
   userAPIService = inject (UserAPI);
@@ -74,13 +79,15 @@ export class Home {
   displayedPage: DisplayedPage = DisplayedPage.Home;
   displayHome = () => this.displayedPage == DisplayedPage.Home;
   displayFavorites = () => this.displayedPage == DisplayedPage.Favorites;
+  displayShoppingCart = () => this.displayedPage == DisplayedPage.ShoppingCart;
 
   constructor () {
     const nullUser: IUser = {
       id:"",
       email:"",
       username:"",
-      favorites:[]
+      favorites:[],
+      shoppingCart:[]
     };
 
     this.defaultUser = nullUser;
@@ -118,10 +125,17 @@ export class Home {
     }
   };
 
-  getFavorites(event:void){
-    this.displayedPage = DisplayedPage.Favorites;
+  renderHomePage(event:void){
+    this.displayedPage= DisplayedPage.Home;
   }
 
+  renderFavorites(event:void){
+    this.displayedPage = DisplayedPage.Favorites;
+  } 
+
+  renderShoppingCart($event: void) {
+    this.displayedPage = DisplayedPage.ShoppingCart;
+  }
   
 
 }
@@ -129,5 +143,6 @@ const enum DisplayedPage {
   Home,
   Favorites,
   Settings,
-  Search
+  Search,
+  ShoppingCart
 }

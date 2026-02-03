@@ -13,6 +13,17 @@
   ));
 }
 
+.in-cart {
+  @include mat.icon-overrides((
+    color: rgb(0, 119, 255),
+  ));
+}
+
+#active-page{
+  background-color: rgb(156, 156, 156);
+ 
+}
+
 html {
   height: 100%;
   // $customTheme : rgb(187, 35, 35);

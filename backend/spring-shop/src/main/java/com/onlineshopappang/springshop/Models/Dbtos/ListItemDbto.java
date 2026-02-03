@@ -32,5 +32,13 @@ public class ListItemDbto {
     @JoinColumn(name = "list_id", nullable = false)
     private ShoppingCartDbto list;
 
+    public ListItemDbto(ProductDbto product,ShoppingCartDbto cart,Integer quantity){
+        this.product = product;
+        this.list = cart;
+        this.quantity = quantity;
+    }
 
+    public ListItemDbto() {
+
+    }
 }

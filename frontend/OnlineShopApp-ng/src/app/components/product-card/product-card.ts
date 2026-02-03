@@ -52,8 +52,12 @@ import { UserAPI } from '../../services/userAPI';
       <div class="container-fluid" [style]="addStyles([autoMargins])">
         <div class="row" style="margin-bottom: 1rem;">
           <!-- <div class="col" [style]="addStyles([padd0,autoMargins,autoPadd,border])"> -->
-          <button matButton [style]="addStyles([border])">
-            <mat-icon>add_shopping_cart</mat-icon>
+          <button matButton [style]="addStyles([border])" (click)="toggleCartItem()">
+            @if(inCart==''){
+              <mat-icon  fontIcon="add_shopping_cart"></mat-icon>
+            }@else {
+              <mat-icon class="in-cart" fontIcon="add_shopping_cart"></mat-icon>
+            }
           </button>
           <!-- </div> -->
         </div>
@@ -82,6 +86,7 @@ export class ProductCard {
   productInfo = input.required<IProduct>();
   userInfo = input.required<IUser>();
   favorite: string = '';
+  inCart: string = '';
 
   padd0: string = 'padding:0;';
   border: string = 'border:1px solid;';
@@ -113,6 +118,20 @@ export class ProductCard {
       if (result) this.favorite = 'favorite-set';
       else this.favorite = '';
     });
+  }
+
+  toggleCartItem(){
+    if (this.userInfo().id == '') {
+      console.log('Sign in to add products to cart');
+      return;
+    }
+    if (this.inCart == '') this.inCart = 'in-cart';
+    else this.inCart = '';
+    this.productApi.toggleCartItem(this.productInfo().id,this.userInfo().id).then((result)=>{
+      console.log('toggleCartItem result: ' + result);
+      if (result) this.inCart = 'in-cart';
+      else this.inCart = '';
+    })
   }
 
   addStyles = (args: Array<string>) => {
