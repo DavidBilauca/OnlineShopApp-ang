@@ -33,6 +33,7 @@ public class ListItemDbto {
     private ShoppingCartDbto list;
 
     public ListItemDbto(ProductDbto product,ShoppingCartDbto cart,Integer quantity){
+        this.id = UUID.randomUUID();
         this.product = product;
         this.list = cart;
         this.quantity = quantity;

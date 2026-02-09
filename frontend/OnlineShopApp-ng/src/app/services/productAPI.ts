@@ -31,16 +31,34 @@ export class ProductAPI {
     return data as IProduct[];
   }
 
+  async getProductById(productId:string){
+    var data={};
+    const result = fetch('http://localhost:8080/Shopping/'+productId, {
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+      },
+    })
+    .then((response)=>{
+      data = response.json();
+    })
+    .catch((error) => {
+        console.log(error);
+      });
+
+      return data as IProduct;
+  }
+
   async toggleCartItem(cartItemId:string,userId:string){
     var cartItemState;
-    var data = {userId:userId}
+    
     //  const result = await fetch('https://localhost:7060/api/Shopping', {
     const result = await fetch('http://localhost:8080/Shopping/toggleCartItem/'+cartItemId, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body:JSON.stringify(data)
+      body:userId
     })
       .then((response) => {
         cartItemState = response.json();

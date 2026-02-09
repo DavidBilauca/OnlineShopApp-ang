@@ -99,6 +99,10 @@ export class ProductCard {
       console.log('Product card: ' + this.productInfo().title + ' is set to fav');
       this.favorite = 'favorite-set';
     }
+    if (this.userInfo().shoppingCart.filter((cartItem) => cartItem.productId == this.productInfo().id).length > 0) {
+      console.log('Product card: ' + this.productInfo().title + ' is added to cart');
+      this.inCart = 'in-cart';
+    }
   }
 
   toggleFavorite() {

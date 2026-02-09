@@ -60,9 +60,13 @@ import { ProductAPI } from '../../services/productAPI';
                 <span style="height: 8rem;"></span>
               </div>
               <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
-                <button matButton [style]="addStyles([border])">
-                  <mat-icon>add_shopping_cart</mat-icon>
-                </button>
+                <button matButton [style]="addStyles([border])" (click)="toggleCartItem()">
+                  @if(inCart==''){
+              <mat-icon  fontIcon="add_shopping_cart"></mat-icon>
+                  }@else {
+              <mat-icon class="in-cart" fontIcon="add_shopping_cart"></mat-icon>
+            }
+          </button>
               </div>
             </div>
           </div>
@@ -78,6 +82,7 @@ export class ProductListFormat {
   productInfo = input.required<IProduct>();
   userInfo = input.required<IUser>();
   favorite: string = '';
+  inCart: string = '';
   
   padd0: string = 'padding:0;';
   border: string = 'border:1px solid;';
@@ -86,17 +91,22 @@ export class ProductListFormat {
   fitWidth:string='width:auto;';
   center: string = 'padding:auto;';
 
+  ngOnInit(){
+    console.log("Product list format: "+JSON.stringify(this.productInfo()));
+  }
+
   ngOnChanges() {
     if (this.userInfo().favorites.filter((fav) => fav.id == this.productInfo().id).length > 0) {
       console.log('Product card: ' + this.productInfo().title + ' is set to fav');
       this.favorite = 'favorite-set';
     }
+    if (this.userInfo().shoppingCart.filter((cartItem) => cartItem.productId == this.productInfo().id).length > 0) {
+      console.log('Product card: ' + this.productInfo().title + ' is added to cart');
+      this.inCart = 'in-cart';
+    }
   }
 
   toggleFavorite() {
-    // console.log('toggle favorite prevstate: ' + this.favorite);
-    // console.log('toggle favorite product id: ' + JSON.stringify(this.productInfo()));
-    // console.log('toggle favorite user id: ' + JSON.stringify(this.userInfo()));
     if(this.userInfo().id == "") {
         console.log("Sign in to add favorites");
         return;
@@ -110,6 +120,20 @@ export class ProductListFormat {
         if (result) this.favorite = 'favorite-set';
              else this.favorite = '';
     });
+  }
+
+  toggleCartItem(){
+    if (this.userInfo().id == '') {
+      console.log('Sign in to add products to cart');
+      return;
+    }
+    if (this.inCart == '') this.inCart = 'in-cart';
+    else this.inCart = '';
+    this.productApi.toggleCartItem(this.productInfo().id,this.userInfo().id).then((result)=>{
+      console.log('toggleCartItem result: ' + result);
+      if (result) this.inCart = 'in-cart';
+      else this.inCart = '';
+    })
   }
 
   addStyles = (args: Array<string>) => {

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,4 +18,7 @@ public interface IListItemCrudRepository extends JpaRepository<ListItemDbto, UUI
 
     @Query("update ListItemDbto as li set li.quantity = ?2 where li.product.id=?1")
     public void updateQuantity(UUID id,Integer quantity);
+
+    @Query("select li from ListItemDbto li where li.list.id=?1")
+    public Optional<List<ListItemDbto>> findAllByListId(UUID listId);
 }

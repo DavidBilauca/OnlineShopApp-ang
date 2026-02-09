@@ -98,6 +98,11 @@ export class Home {
 
       this.userAPIService.getFavorites(this.defaultUser.id).then(result=>{
         this.defaultUser.favorites = result;
+        //console.log(JSON.stringify(result));
+      })
+
+      this.userAPIService.getShoppingCartItems(this.defaultUser.id).then(result=>{
+        this.defaultUser.shoppingCart = result;
         console.log(JSON.stringify(result));
       })
 

@@ -49,6 +49,8 @@ public class ShoppingController {
     private FavoriteService _favoriteService;
     @Autowired
     private ListItemService _listItemService;
+    @Autowired
+    private IShoppingCartCrudRepository _shoppingCartRepo;
 
     //private final ObjectMapper mapper;
     //private final CategoryMapper categoryMapper;
@@ -124,6 +126,23 @@ public class ShoppingController {
             }
             return ResponseEntity.ok(true);
         }
+    }
+
+    @GetMapping("/cartItems/{userId}")
+    public ResponseEntity<List<ListItemDto>> getCartItems(@PathVariable String userId){
+        UUID uuid = UUID.fromString(userId);
+        var userOpt = _userRepo.findById(uuid);
+        if(!userOpt.isPresent()) return ResponseEntity.notFound().eTag("User account not found. Id: "+userId).build();
+        UserDbto user = userOpt.get();
+        var userCartOpt = _shoppingCartRepo.findByUserId(uuid);
+        var cartItemsOpt = _listItemRepo.findAllByListId(userCartOpt.get().getId());
+        if(!cartItemsOpt.isPresent()) return ResponseEntity.notFound().eTag("No items in shopping cart").build();
+        List<ListItemDto> cartItemsDto = cartItemsOpt.get().stream()
+                .map(cartItemDbto->
+                        new ListItemDto(
+                            new ListItem(cartItemDbto)
+                )).toList();
+        return ResponseEntity.ok(cartItemsDto);
     }
 
     @PostMapping("/toggleCartItem/{productId}")

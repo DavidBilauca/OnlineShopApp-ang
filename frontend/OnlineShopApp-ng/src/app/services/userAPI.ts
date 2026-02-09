@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { IProduct, IUser } from "../../types";
+import { IListItem, IProduct, IUser } from "../../types";
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,24 @@ async getDefaultUser() {
       });
 
     return data as IUser;
+  }
+
+  async getShoppingCartItems(userId:string){
+    var data ={};
+    await fetch('http://localhost:8080/Shopping/cartItems/'+userId, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        data = response.json();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      //console.log("userApi getFavorites: "+ (data as IProduct[]));
+    return data as IListItem[];
   }
 
   async getFavorites(userId:string){
