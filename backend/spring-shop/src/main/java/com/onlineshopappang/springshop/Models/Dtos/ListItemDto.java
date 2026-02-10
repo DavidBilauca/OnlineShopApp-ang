@@ -18,12 +18,12 @@ public class ListItemDto {
     public UUID id;
     public UUID listId;
     public UUID productId;
-    public Product product;
+    public ProductDto product;
     public Integer quantity;
 
     public ListItemDto(ListItem item) {
         this.id = item.Id;
-        this.product = item.Product;
+        this.product = new ProductDto(item.Product);
         this.productId = item.ProductId;
         this.quantity = item.Quantity;
         this.listId = item.ListId;

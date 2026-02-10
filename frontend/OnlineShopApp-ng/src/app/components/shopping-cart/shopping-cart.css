@@ -1,0 +1,37 @@
+.quantityDisplay {
+    min-height: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+    font-size: 2rem;
+    width: auto;
+    border:2px solid rgba(0, 0, 0, 0.336);
+    background-color: rgba(0, 0, 0, 0);
+    text-align: center;
+}
+
+.card mat-icon {
+  /* color: rgb(187, 35, 35); */
+  /* float: right; */
+  vertical-align: middle;
+  margin: auto;
+  /* margin-bottom: 2rem; */
+  font-size: 2rem;
+  width: 4rem;
+  height: 2rem;
+  line-height: 2rem;
+}
+
+.card {
+  /* display: inline-flex; */
+  margin: 0.5rem;
+  margin-right: -1.5rem;
+  max-width: auto;
+  min-width: 5rem;
+  background-color: rgba(255, 255, 255, 0.068);
+  min-height: 19rem;
+  height: auto;
+  border-radius: 1rem;
+}

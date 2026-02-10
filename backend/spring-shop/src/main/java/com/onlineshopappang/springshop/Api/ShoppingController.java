@@ -168,8 +168,9 @@ public class ShoppingController {
         }
     }
     @PutMapping("updateQuantity/{listItemId}")
-    public ResponseEntity<ListItemDto> updateQuantity(@PathVariable String listItemId,@RequestBody Integer quantity) {
+    public ResponseEntity<ListItemDto> updateQuantity(@PathVariable String listItemId,@RequestBody String quantityStr) {
         UUID listItemUuid = UUID.fromString(listItemId);
+        Integer quantity = Integer.parseInt(quantityStr);
         var cartItemOpt = _listItemRepo.findById(listItemUuid);
         if(cartItemOpt.isPresent()){
             if(quantity <= 0){
@@ -179,7 +180,7 @@ public class ShoppingController {
                 return ResponseEntity.ok(returnObj);
             }
             try{
-                _listItemRepo.updateQuantity(cartItemOpt.get().getId(),quantity);
+                _listItemRepo.updateQuantity(listItemUuid,quantity);
             }catch(Exception e){
                 return ResponseEntity.notFound().eTag(e.getMessage()).build();
             }

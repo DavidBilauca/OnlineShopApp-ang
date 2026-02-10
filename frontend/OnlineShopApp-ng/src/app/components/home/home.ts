@@ -51,9 +51,12 @@ import { ShoppingCart } from "../shopping-cart/shopping-cart";
             </div>
           }
           @if(displayShoppingCart()){
+            @defer(when inputsLoaded){
             <div class="col-lg-8">
               <shopping-cart [items]="this.defaultUser.shoppingCart" [userInfo]="defaultUser"/>
             </div>
+            }
+            
           }
           
           <div class="col-sm-2"></div>
@@ -76,6 +79,7 @@ export class Home {
   categories: ICategory[] = []; 
   filters: Filters = {categories:[],viewMode:""};
 
+  inputsLoaded:boolean= false;
   displayedPage: DisplayedPage = DisplayedPage.Home;
   displayHome = () => this.displayedPage == DisplayedPage.Home;
   displayFavorites = () => this.displayedPage == DisplayedPage.Favorites;
@@ -118,6 +122,11 @@ export class Home {
     });
   }
 
+  
+
+    ngOnInit(){
+      this.inputsLoaded = true;
+    }
 
   setFilters = (event: { c: ICategory; state: boolean }) => {
     if (event.state) {

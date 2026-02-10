@@ -11,6 +11,7 @@ import { ProductAPI } from '../../services/productAPI';
   imports: [MatCard, MatButton, MatCardHeader, MatCardContent, MatIcon, CurrencyPipe],
   template: `
     <!-- <mat-grid-tile> -->
+      @defer(on viewport;when inputsLoaded){
     <mat-card class="card">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
@@ -72,7 +73,13 @@ import { ProductAPI } from '../../services/productAPI';
           </div>
         </div>
       </div>
-    </mat-card>
+    </mat-card>}
+    @placeholder {
+      <p></p>
+    }
+    @loading {
+      <p>Loading content</p>
+    }
     <!-- </mat-grid-tile> -->
   `,
   styleUrl: './product-list-format.css',
@@ -83,6 +90,7 @@ export class ProductListFormat {
   userInfo = input.required<IUser>();
   favorite: string = '';
   inCart: string = '';
+  inputsLoaded: boolean = false;
   
   padd0: string = 'padding:0;';
   border: string = 'border:1px solid;';
@@ -92,7 +100,8 @@ export class ProductListFormat {
   center: string = 'padding:auto;';
 
   ngOnInit(){
-    console.log("Product list format: "+JSON.stringify(this.productInfo()));
+    //console.log("Product list format: "+JSON.stringify(this.productInfo()));
+    this.inputsLoaded=true;
   }
 
   ngOnChanges() {

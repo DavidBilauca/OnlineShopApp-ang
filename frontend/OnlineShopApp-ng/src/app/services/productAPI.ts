@@ -72,7 +72,7 @@ export class ProductAPI {
 
   async updateQuantity(cartItemId:string,quantity:number){
     var cartItem;
-    var data = {quantity:quantity}
+    var data = quantity;
     //  const result = await fetch('https://localhost:7060/api/Shopping', {
     const result = await fetch('http://localhost:8080/Shopping/updateQuantity/'+cartItemId, {
       method: 'PUT',
