@@ -7,6 +7,7 @@ import { MatAnchor, MatMiniFabButton } from '@angular/material/button';
 import { ProductAPI } from '../../services/productAPI';
 import { CurrencyPipe, JsonPipe } from '@angular/common';
 import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { ProductCartItem } from "../product-cart-item/product-cart-item";
 
 @Component({
   selector: 'shopping-cart',
@@ -18,8 +19,9 @@ import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card'
     MatCard,
     MatCardContent,
     MatCardActions,
-    CurrencyPipe
-  ],
+    CurrencyPipe,
+    ProductCartItem
+],
   template: `
     <div class="container-fluid">
       <div class="row">
@@ -36,33 +38,11 @@ import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card'
         @defer (on viewport; when inputsLoaded) {
           @for (item of items(); track $index) {
             <div class="row" style="padding:0;margins:0">
-              <div class="col-lg-2">
-                <mat-card class="card">
-                  <mat-card-actions style="margin-top:auto;margin-bottom:auto;">
-                    <div class="container">
-                       <div class="row">
-                          <button matButton class="quantityBtn" (click)="handleAdd(items()[$index])">
-                            <mat-icon>add</mat-icon>
-                          </button>
-                        </div>
-                        <div class="row">
-                          <input type="text" (value)="item.quantity" [defaultValue]="item.quantity" class="quantityDisplay"/>
-                        </div>
-                        <div class="row">
-                          <button matButton class="quantityBtn" (click)="handleSubtract(items()[$index])">
-                            <mat-icon>remove</mat-icon>
-                          </button>
-                        </div>
-                    </div>
-                  </mat-card-actions>
-                </mat-card>
-              </div>
-
               <div class="col-lg-10">
-                <product-list-format
-                  [productInfo]="items()[$index].product"
+                <product-cart-item
+                  [productInfo]="items()[$index]"
                   [userInfo]="userInfo()"
-                ></product-list-format>
+                ></product-cart-item>
               </div>
             </div>
           }
@@ -99,18 +79,8 @@ export class ShoppingCart {
 
   viewStyleGrid = () => {
     return this.productViewStyle == ViewStyle.Grid;
-  };
+  }; 
 
-  handleSubtract(item: IListItem) {
-    item.quantity -= 1;
-    this.productsAPI.updateQuantity(item.id, item.quantity);
-    this.ngOnInit();
-  }
-  handleAdd(item: IListItem) {
-    item.quantity += 1;
-    this.productsAPI.updateQuantity(item.id, item.quantity);
-    this.ngOnInit();
-  }
   calculateTotal(){
     const total = this.items()
     .reduce(

@@ -32,14 +32,15 @@ import { ProductAPI } from '../../services/productAPI';
               <p id="product-details">
                 {{ productInfo().description }}
               </p>
-              <h5 style="margin-bottom: 1rem;">
+              <p style="margin-bottom: 0.1rem; font-size: 1rem;">
                 <span style="color: rgb(253, 127, 53);">{{
                   productInfo().price | currency: 'RON '
                 }}</span>
-              </h5>
-              <h6 style="margin-bottom: 1rem;">
+              </p>
+              <p style="margin-bottom: 1rem;">
+                Rating:
                 <span style="color:rgb(255, 255, 143);">{{ productInfo().rating }} /5</span>
-              </h6>
+              </p>
             </mat-card-content>
           </div>
           <div class="col">
@@ -58,7 +59,7 @@ import { ProductAPI } from '../../services/productAPI';
                 <button matButton><mat-icon>share</mat-icon></button>
               </div>
               <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
-                <span style="height: 8rem;"></span>
+                <span style="min-height: 3rem;height: 5rem;"></span>
               </div>
               <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
                 <button matButton [style]="addStyles([border])" (click)="toggleCartItem()">

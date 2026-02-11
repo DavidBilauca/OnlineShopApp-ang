@@ -51,15 +51,15 @@ import { UserAPI } from '../../services/userAPI';
       <span style="min-height: 3rem;"></span>
       <div class="container-fluid" [style]="addStyles([autoMargins])">
         <div class="row" style="margin-bottom: 1rem;">
-          <!-- <div class="col" [style]="addStyles([padd0,autoMargins,autoPadd,border])"> -->
-          <button matButton [style]="addStyles([border])" (click)="toggleCartItem()">
-            @if(inCart==''){
-              <mat-icon  fontIcon="add_shopping_cart"></mat-icon>
-            }@else {
-              <mat-icon class="in-cart" fontIcon="add_shopping_cart"></mat-icon>
-            }
-          </button>
-          <!-- </div> -->
+             @if (inCart == '') {
+                    <button matButton="outlined"  (click)="toggleCartItem()">
+                    <mat-icon fontIcon="add_shopping_cart"></mat-icon>
+                    </button>
+                  } @else {
+                    <button matButton="filled"  (click)="toggleCartItem()">
+                    <mat-icon fontIcon="add_shopping_cart"></mat-icon>
+                    </button>
+                  }
         </div>
         <div class="row" style="margin-bottom: 1rem;">
           <div class="col-sm-6" [style]="addStyles([autoPadd, autoMargins])">

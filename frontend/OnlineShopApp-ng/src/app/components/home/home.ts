@@ -52,7 +52,7 @@ import { ShoppingCart } from "../shopping-cart/shopping-cart";
           }
           @if(displayShoppingCart()){
             @defer(when inputsLoaded){
-            <div class="col-lg-8">
+            <div class="col-lg-9">
               <shopping-cart [items]="this.defaultUser.shoppingCart" [userInfo]="defaultUser"/>
             </div>
             }
