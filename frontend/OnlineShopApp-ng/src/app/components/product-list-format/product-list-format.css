@@ -1,7 +1,8 @@
 .card {
   /* display: inline-flex; */
   margin: 0.5rem;
-  max-width: auto;
+  /* max-width: auto; */
+  padding-right: 2rem;
   background-color: rgba(255, 255, 255, 0.068);
   min-height: 8rem;
   border-radius: 1rem;
@@ -62,9 +63,18 @@ mat-card img {
   margin-bottom: 1rem;
   width: 18rem;
 }
+#price{
+ margin-bottom: 0.5rem; 
+ font-size: 1rem;
+ color: rgb(253, 127, 53);
+}
 
-mat-card-title {
-  font-size: 1.5rem;
+#rating{
+ margin-bottom: 0rem;
+ 
+}
+#rating span{
+color:rgb(255, 255, 143);
 }
 
 #product-details {

@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import { ProductCard } from '../product-card/product-card';
 import { Filters, ICategory, IProduct, IUser } from '../../../types';
@@ -40,8 +40,8 @@ import { MatIcon } from '@angular/material/icon';
                 <!-- <div class="col-md-3" style="padding:0;margins:0">
           <product-card [productInfo]="products()[$index]"></product-card>
         </div> -->
-                <div class="col-md-3" style="padding:0;margins:0">
-                  <product-card [productInfo]="products()[$index]" [userInfo]="userInfo()"></product-card>
+                <div class="col-md-2" style="padding:0;margins:0">
+                  <product-card [productInfo]="products()[$index]" [userInfo]="userInfo()" (openProductPage)="handleOpenProductPage($event)"></product-card>
                 </div>
               }
             }
@@ -79,8 +79,16 @@ export class ContentGrid {
   products = input.required<Array<IProduct>>();
   filters = input.required<Filters>();
   userInfo = input.required<IUser>();
+
+  openProductPage = output<IProduct>();
+
   colStyle: string = 'padding:0;margins:0';
   productViewStyle: ViewStyle = ViewStyle.Grid;
+
+
+  handleOpenProductPage(product:IProduct){
+    this.openProductPage.emit(product);
+  }
 
   viewStyleGrid = () => {
     return this.productViewStyle == ViewStyle.Grid;

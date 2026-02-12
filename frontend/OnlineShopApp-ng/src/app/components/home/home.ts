@@ -12,12 +12,13 @@ import { UserAPI } from '../../services/userAPI';
 import { ListViewer } from "../list-viewer/list-viewer";
 import { D } from '@angular/cdk/keycodes';
 import { ShoppingCart } from "../shopping-cart/shopping-cart";
+import { ProductPage } from "../product-page/product-page";
 
 // import {} from '../../assets'
 
 @Component({
   selector: 'home',
-  imports: [RouterOutlet, Header, ContentGrid, SideNav, NgOptimizedImage, ListViewer, ShoppingCart],
+  imports: [RouterOutlet, Header, ContentGrid, SideNav, NgOptimizedImage, ListViewer, ShoppingCart, ProductPage],
   template: `
     <main>
       <div class="hero">
@@ -41,22 +42,26 @@ import { ShoppingCart } from "../shopping-cart/shopping-cart";
             <side-nav [categories]="categories" (toggleEvent)="setFilters($event)" />
           </div>
           @if(displayHome()){
-            <div class="col-lg-8">
-              <content-grid [products]="products" [filters]="filters" [userInfo]="defaultUser" />
+            <div class="col-lg-10">
+              <content-grid [products]="products" [filters]="filters" [userInfo]="defaultUser" (openProductPage)="handleOpenProductPage($event)"/>
             </div>
           }
           @if(displayFavorites()){
-            <div class="col-lg-8">
+            <div class="col-lg-10">
               <list-viewer [items]="this.defaultUser.favorites" [filters]="filters" [userInfo]="defaultUser" />
             </div>
           }
           @if(displayShoppingCart()){
             @defer(when inputsLoaded){
-            <div class="col-lg-9">
+            <div class="col-lg-10">
               <shopping-cart [items]="this.defaultUser.shoppingCart" [userInfo]="defaultUser"/>
             </div>
             }
-            
+          }
+          @if(displayProductPage()){
+             <div class="col-lg-10">
+              <product-page [productInfo]="selectedProduct" [userInfo]="defaultUser"/>
+            </div>
           }
           
           <div class="col-sm-2"></div>
@@ -73,6 +78,15 @@ export class Home {
   userAPIService = inject (UserAPI);
 
   defaultUser :IUser;
+  nullProduct:IProduct={
+    id: '',
+    title: '',
+    price: 0,
+    rating: 0,
+    category: Categories.None,
+    categoryId: ''
+  }
+  selectedProduct: IProduct = this.nullProduct;
 
   products: IProduct[] = [];
   favorites:IProduct[]=[];
@@ -81,9 +95,11 @@ export class Home {
 
   inputsLoaded:boolean= false;
   displayedPage: DisplayedPage = DisplayedPage.Home;
+
   displayHome = () => this.displayedPage == DisplayedPage.Home;
   displayFavorites = () => this.displayedPage == DisplayedPage.Favorites;
   displayShoppingCart = () => this.displayedPage == DisplayedPage.ShoppingCart;
+  displayProductPage = () => this.displayedPage == DisplayedPage.Product;
 
   constructor () {
     const nullUser: IUser = {
@@ -93,7 +109,6 @@ export class Home {
       favorites:[],
       shoppingCart:[]
     };
-
     this.defaultUser = nullUser;
     //!!! update backend to retrieve the authenticated user after auth implementation
     this.userAPIService.getDefaultUser().then(result=>{
@@ -123,6 +138,11 @@ export class Home {
   }
 
   
+
+  handleOpenProductPage(product:IProduct){
+    this.selectedProduct = product;
+    this.displayedPage = DisplayedPage.Product;
+  }
 
     ngOnInit(){
       this.inputsLoaded = true;
@@ -158,5 +178,6 @@ const enum DisplayedPage {
   Favorites,
   Settings,
   Search,
-  ShoppingCart
+  ShoppingCart,
+  Product
 }

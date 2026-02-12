@@ -11,74 +11,77 @@ import { ProductAPI } from '../../services/productAPI';
   imports: [MatCard, MatButton, MatCardHeader, MatCardContent, MatIcon, CurrencyPipe],
   template: `
     <!-- <mat-grid-tile> -->
-      @defer(on viewport;when inputsLoaded){
-    <mat-card class="card">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-      </mat-card-header>
-      <div class="container-flex">
-        <div class="row">
-          <div class="col">
-            <img
-              mat-card-image
-              src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
-              alt="Photo of a Shiba Inu"
-            />
-          </div>
-          <div class="col">
-            <mat-card-content>
-              <!-- <mat-card-title>{{productInfo().title}}</mat-card-title> -->
-              <p class="card-title">{{ productInfo().title }}</p>
-              <p id="product-details">
-                {{ productInfo().description }}
-              </p>
-              <p style="margin-bottom: 0.1rem; font-size: 1rem;">
-                <span style="color: rgb(253, 127, 53);">{{
-                  productInfo().price | currency: 'RON '
-                }}</span>
-              </p>
-              <p style="margin-bottom: 1rem;">
-                Rating:
-                <span style="color:rgb(255, 255, 143);">{{ productInfo().rating }} /5</span>
-              </p>
-            </mat-card-content>
-          </div>
-          <div class="col">
-            <div class="container-fluid" [style]="addStyles([autoMargins])">
-              
-              <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
-                <button matButton (click)="toggleFavorite()">
-                @if(favorite==''){<mat-icon  fontIcon="favorite"></mat-icon>}
-                @else {<mat-icon class="favorite-set" fontIcon="favorite"></mat-icon>}
-            </button>
-              </div>
-              <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
-                <span style="height: 0.5rem;"></span>
-              </div>
-              <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
-                <button matButton><mat-icon>share</mat-icon></button>
-              </div>
-              <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
-                <span style="min-height: 3rem;height: 5rem;"></span>
-              </div>
-              <div class="row" [style]="addStyles([autoPadd, autoMargins,fitWidth])">
-                <button matButton [style]="addStyles([border])" (click)="toggleCartItem()">
-                  @if(inCart==''){
-              <mat-icon  fontIcon="add_shopping_cart"></mat-icon>
-                  }@else {
-              <mat-icon class="in-cart" fontIcon="add_shopping_cart"></mat-icon>
-            }
-          </button>
+    @defer (on viewport; when inputsLoaded) {
+      <mat-card class="card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+        </mat-card-header>
+        <div class="container-flex">
+          <div class="row">
+            <div class="col">
+              <img
+                mat-card-image
+                src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
+                alt="Photo of a Shiba Inu"
+              />
+            </div>
+            <div class="col" id="content-col">
+              <mat-card-content>
+                <p class="card-title">{{ productInfo().title }}</p>
+                <p id="product-details">
+                  {{ productInfo().description }}
+                </p>
+                <p id="price"> {{productInfo().price | currency: 'RON '}}
+                </p>
+                <p id="rating">
+                  Rating:
+                  <span>{{ productInfo().rating }} /5</span>
+                </p>
+              </mat-card-content>
+            </div>
+            <div class="col">
+              <div class="container-fluid" [style]="addStyles([autoMargins])">
+                <div class="row" [style]="addStyles([autoPadd, autoMargins, fitWidth])">
+                  <button matButton (click)="toggleFavorite()">
+                    @if (favorite == '') {
+                      <mat-icon fontIcon="favorite"></mat-icon>
+                    } @else {
+                      <mat-icon class="favorite-set" fontIcon="favorite"></mat-icon>
+                    }
+                  </button>
+                </div>
+                <div class="row" [style]="addStyles([autoPadd, autoMargins, fitWidth])">
+                  <span style="height: 0.5rem;"></span>
+                </div>
+                <div class="row" [style]="addStyles([autoPadd, autoMargins, fitWidth])">
+                  <button matButton><mat-icon>share</mat-icon></button>
+                </div>
+                <div class="row" [style]="addStyles([autoPadd, autoMargins, fitWidth])">
+                  <span style="min-height: 3rem;height: 5rem;"></span>
+                </div>
+                <div class="row" [style]="addStyles([autoPadd, autoMargins, fitWidth])">
+                  @if (inCart == '') {
+                    <button matButton="outlined" [style]="addStyles([border])" (click)="toggleCartItem()">
+                      <mat-icon fontIcon="add_shopping_cart"></mat-icon>
+                    </button>
+                  } @else {
+                    <button
+                      matButton="filled"
+                      [style]="addStyles([border])"
+                      (click)="toggleCartItem()"
+                    >
+                      <mat-icon fontIcon="add_shopping_cart"></mat-icon>
+                    </button>
+                  }
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </mat-card>}
-    @placeholder {
+      </mat-card>
+    } @placeholder {
       <p></p>
-    }
-    @loading {
+    } @loading {
       <p>Loading content</p>
     }
     <!-- </mat-grid-tile> -->
@@ -92,17 +95,17 @@ export class ProductListFormat {
   favorite: string = '';
   inCart: string = '';
   inputsLoaded: boolean = false;
-  
+
   padd0: string = 'padding:0;';
   border: string = 'border:1px solid;';
   autoMargins: string = 'margin-left:auto;margin-right:auto;margin-bottom:2rem';
   autoPadd: string = 'padding:auto;';
-  fitWidth:string='width:auto;';
+  fitWidth: string = 'width:auto;';
   center: string = 'padding:auto;';
 
-  ngOnInit(){
+  ngOnInit() {
     //console.log("Product list format: "+JSON.stringify(this.productInfo()));
-    this.inputsLoaded=true;
+    this.inputsLoaded = true;
   }
 
   ngOnChanges() {
@@ -110,40 +113,43 @@ export class ProductListFormat {
       console.log('Product card: ' + this.productInfo().title + ' is set to fav');
       this.favorite = 'favorite-set';
     }
-    if (this.userInfo().shoppingCart.filter((cartItem) => cartItem.productId == this.productInfo().id).length > 0) {
+    if (
+      this.userInfo().shoppingCart.filter((cartItem) => cartItem.productId == this.productInfo().id)
+        .length > 0
+    ) {
       console.log('Product card: ' + this.productInfo().title + ' is added to cart');
       this.inCart = 'in-cart';
     }
   }
 
   toggleFavorite() {
-    if(this.userInfo().id == "") {
-        console.log("Sign in to add favorites");
-        return;
+    if (this.userInfo().id == '') {
+      console.log('Sign in to add favorites');
+      return;
     }
 
-    if(this.favorite == "") this.favorite="favorite-set";
-    else  this.favorite="";
+    if (this.favorite == '') this.favorite = 'favorite-set';
+    else this.favorite = '';
 
-    this.productApi.setFavorite(this.productInfo().id, this.userInfo().id).then(result=>{
-        console.log("setFavorite result: "+result);
-        if (result) this.favorite = 'favorite-set';
-             else this.favorite = '';
+    this.productApi.setFavorite(this.productInfo().id, this.userInfo().id).then((result) => {
+      console.log('setFavorite result: ' + result);
+      if (result) this.favorite = 'favorite-set';
+      else this.favorite = '';
     });
   }
 
-  toggleCartItem(){
+  toggleCartItem() {
     if (this.userInfo().id == '') {
       console.log('Sign in to add products to cart');
       return;
     }
     if (this.inCart == '') this.inCart = 'in-cart';
     else this.inCart = '';
-    this.productApi.toggleCartItem(this.productInfo().id,this.userInfo().id).then((result)=>{
+    this.productApi.toggleCartItem(this.productInfo().id, this.userInfo().id).then((result) => {
       console.log('toggleCartItem result: ' + result);
       if (result) this.inCart = 'in-cart';
       else this.inCart = '';
-    })
+    });
   }
 
   addStyles = (args: Array<string>) => {

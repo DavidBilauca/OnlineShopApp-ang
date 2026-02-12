@@ -51,11 +51,15 @@ import { ProductCartItem } from "../product-cart-item/product-cart-item";
         } @loading (minimum 1s) {
           <h1>Loading...</h1>
         }
+        <div class="row">
+          <div class="col-lg-10">
         <mat-card class="card" style="min-height: 4rem; margin-bottom:5rem">
           <mat-card-content >
             <h4>Total: {{calculateTotal() | currency:"RON " }}</h4>
           </mat-card-content>
         </mat-card>
+          </div>
+        </div>
       </div>
     </div>
   `,

@@ -27,41 +27,21 @@ import { ProductAPI } from '../../services/productAPI';
             </div>
             <div class="col">
               <mat-card-content>
-                <!-- <mat-card-title>{{productInfo().title}}</mat-card-title> -->
                 <p class="card-title">{{ productInfo().product.title }}</p>
                 <p id="product-details">
                   {{ productInfo().product.description }}
                 </p>
-                <p style="margin-bottom: 0.1rem; font-size: 1rem;">
-                  <span style="color: rgb(253, 127, 53);">{{
+                <p id="price">
+                  <span >{{
                     productInfo().product.price | currency: 'RON '
                   }}</span>
                 </p>
-                <p style="margin-bottom: 1rem;">
+                <p id="rating">
                   Rating:
-                  <span style="color:rgb(255, 255, 143);"
-                    >{{ productInfo().product.rating }} /5</span
-                  >
+                  <span>{{ productInfo().product.rating }} /5</span>
                 </p>
               </mat-card-content>
             </div>
-            <!-- <div class="col-lg-2">
-                    <div class="container">
-                       <div class="row">
-                          <button matButton class="quantityBtn" (click)="handleAdd(productInfo())">
-                            <mat-icon>add</mat-icon>
-                          </button>
-                        </div>
-                        <div class="row">
-                          <input type="text" (value)="productInfo().quantity" [defaultValue]="productInfo().quantity" class="quantityDisplay"/>
-                        </div>
-                        <div class="row">
-                          <button matButton class="quantityBtn" (click)="handleSubtract(productInfo())">
-                            <mat-icon>remove</mat-icon>
-                          </button>
-                        </div>
-                    </div>
-              </div> -->
             <div class="col">
               <div class="container-fluid" [style]="addStyles([autoMargins])">
                 <div class="row" [style]="addStyles([autoPadd, autoMargins, fitWidth])">
@@ -80,29 +60,24 @@ import { ProductAPI } from '../../services/productAPI';
                   <button matButton><mat-icon>share</mat-icon></button>
                 </div>
                 <div class="row" [style]="addStyles([autoPadd, autoMargins, fitWidth])">
-                  <span style="min-height: 2rem;height: 4rem;"></span>
+                  <span style="min-height: 2rem;height: 2rem;"></span>
                 </div>
                 <div class="row">
-                  <div class="btn-group" style="border-radius: 0.2rem;margin-bottom:-1.5rem">
-                  <!-- <div class="col-sm-3"> -->
+                  <div class="col">
+                  <div class="btn-group" id="quantity-btn-group">
                     <button matButton type="button" class="btn" (click)="handleSubtract(productInfo())">
                       <mat-icon>remove</mat-icon>
                     </button>
-                  <!-- </div> -->
-                  <!-- <div class="col-sm-6"> -->
                     <input
                       type="text"
                       (value)="productInfo().quantity"
                       [defaultValue]="productInfo().quantity"
                       class="quantityDisplay"
                     />
-                  <!-- </div> -->
-                  <!-- <div class="col-sm-3"> -->
-                    
                     <button matButton type="button" class="btn" (click)="handleAdd(productInfo())">
                       <mat-icon>add</mat-icon>
                     </button>
-                  <!-- </div> -->
+                  </div>
                   </div>
                 </div>
               </div>

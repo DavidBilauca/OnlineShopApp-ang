@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import {
   MatCard,
@@ -33,22 +33,24 @@ import { UserAPI } from '../../services/userAPI';
         src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
         alt="Photo of a Shiba Inu"
       />
+      <a (click)="handleProductClick()">
       <mat-card-content>
         <!-- <mat-card-title>{{productInfo().title}}</mat-card-title> -->
         <p class="card-title">{{ productInfo().title }}</p>
         <p id="product-details">
           {{ productInfo().description }}
         </p>
-        <h5 style="margin-bottom: 1rem;">
+        <p style="margin-bottom: 0.1rem; font-size:1rem">
           <span style="color: rgb(253, 127, 53);">{{
             productInfo().price | currency: 'RON '
           }}</span>
-        </h5>
-        <h6 style="margin-bottom: 1rem;">
+        </p>
+        <p style="margin-bottom: 1rem;">
           <span style="color:rgb(255, 255, 143);">{{ productInfo().rating }} /5</span>
-        </h6>
+        </p>
       </mat-card-content>
-      <span style="min-height: 3rem;"></span>
+      </a>
+      <span style="min-height: 0.1rem;"></span>
       <div class="container-fluid" [style]="addStyles([autoMargins])">
         <div class="row" style="margin-bottom: 1rem;">
              @if (inCart == '') {
@@ -62,8 +64,8 @@ import { UserAPI } from '../../services/userAPI';
                   }
         </div>
         <div class="row" style="margin-bottom: 1rem;">
-          <div class="col-sm-6" [style]="addStyles([autoPadd, autoMargins])">
-            <button matButton (click)="toggleFavorite()">
+          <div class="col-sm-6" [style]="addStyles([autoMargins])">
+            <button matButton class="card-action-btn" (click)="toggleFavorite()">
               @if (favorite == '') {
                 <mat-icon fontIcon="favorite"></mat-icon>
               } @else {
@@ -71,7 +73,7 @@ import { UserAPI } from '../../services/userAPI';
               }
             </button>
           </div>
-          <div class="col-sm-6" [style]="addStyles([autoPadd, autoMargins])">
+          <div class="col-sm-6" [style]="addStyles([autoMargins])">
             <button matButton><mat-icon>share</mat-icon></button>
           </div>
         </div>
@@ -85,6 +87,7 @@ export class ProductCard {
   productApi = inject(ProductAPI);
   productInfo = input.required<IProduct>();
   userInfo = input.required<IUser>();
+  openProductPage = output<IProduct>();
   favorite: string = '';
   inCart: string = '';
 
@@ -136,6 +139,11 @@ export class ProductCard {
       if (result) this.inCart = 'in-cart';
       else this.inCart = '';
     })
+  }
+
+  handleProductClick(){
+    console.log("Clicked on " + this.productInfo().title);
+    this.openProductPage.emit(this.productInfo());
   }
 
   addStyles = (args: Array<string>) => {
