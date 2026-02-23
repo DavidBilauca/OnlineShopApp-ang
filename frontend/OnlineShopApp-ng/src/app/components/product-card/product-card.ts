@@ -28,18 +28,27 @@ import { UserAPI } from '../../services/userAPI';
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
       </mat-card-header>
+      
       <img
         mat-card-image
         src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
         alt="Photo of a Shiba Inu"
       />
-      <a (click)="handleProductClick()">
       <mat-card-content>
         <!-- <mat-card-title>{{productInfo().title}}</mat-card-title> -->
         <p class="card-title">{{ productInfo().title }}</p>
-        <p id="product-details">
-          {{ productInfo().description }}
-        </p>
+        
+        <a class="detailsToggleLink" (click)="handleDetailsToggle()" data-bs-toggle="collapse" data-bs-target="#collapsable-details">
+          @if(detailsToggled==false){more<mat-icon>expand_more</mat-icon>}
+          @else{less<mat-icon>expand_less</mat-icon>}
+        </a>
+        <div class="collapse {{this.productInfo().id}}" id="collapsable-details">
+          <p  id="product-details">
+            <a (click)="handleProductClick()">{{ productInfo().description }}</a>
+          </p>
+        </div>
+        
+        
         <p style="margin-bottom: 0.1rem; font-size:1rem">
           <span style="color: rgb(253, 127, 53);">{{
             productInfo().price | currency: 'RON '
@@ -49,7 +58,7 @@ import { UserAPI } from '../../services/userAPI';
           <span style="color:rgb(255, 255, 143);">{{ productInfo().rating }} /5</span>
         </p>
       </mat-card-content>
-      </a>
+
       <span style="min-height: 0.1rem;"></span>
       <div class="container-fluid" [style]="addStyles([autoMargins])">
         <div class="row" style="margin-bottom: 1rem;">
@@ -88,6 +97,7 @@ export class ProductCard {
   productInfo = input.required<IProduct>();
   userInfo = input.required<IUser>();
   openProductPage = output<IProduct>();
+  detailsToggled:boolean = false;
   favorite: string = '';
   inCart: string = '';
 
@@ -146,6 +156,10 @@ export class ProductCard {
     this.openProductPage.emit(this.productInfo());
   }
 
+  handleDetailsToggle(){
+    this.detailsToggled = this.detailsToggled?false:true;
+  }
+
   addStyles = (args: Array<string>) => {
     var result = '';
     args.forEach((arg) => (result = result.concat(arg)));
@@ -155,4 +169,6 @@ export class ProductCard {
   testStyle = () => {
     return this.padd0.concat(this.border);
   };
+
 }
+

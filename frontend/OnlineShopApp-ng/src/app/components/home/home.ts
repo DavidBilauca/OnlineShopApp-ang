@@ -10,7 +10,7 @@ import { ProductAPI } from '../../services/productAPI';
 import { CategoryAPI } from '../../services/categoryAPI';
 import { UserAPI } from '../../services/userAPI';
 import { ListViewer } from "../list-viewer/list-viewer";
-import { D } from '@angular/cdk/keycodes';
+
 import { ShoppingCart } from "../shopping-cart/shopping-cart";
 import { ProductPage } from "../product-page/product-page";
 
@@ -38,9 +38,9 @@ import { ProductPage } from "../product-page/product-page";
           <div class="col-lg-12"></div>
         </div>
         <div class="row">
-          <div class="col-sm-2" >
+          <!-- <div class="col-sm-2" >
             <side-nav [categories]="categories" (toggleEvent)="setFilters($event)" />
-          </div>
+          </div> -->
           @if(displayHome()){
             <div class="col-lg-10">
               <content-grid [products]="products" [filters]="filters" [userInfo]="defaultUser" (openProductPage)="handleOpenProductPage($event)"/>

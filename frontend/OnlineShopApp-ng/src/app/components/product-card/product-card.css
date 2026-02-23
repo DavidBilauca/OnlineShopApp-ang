@@ -70,3 +70,16 @@ mat-card-title {
   text-overflow: ellipsis;
   min-height: 4rem;
 }
+
+.detailsToggleLink{
+  text-decoration-line: none;
+  text-decoration-color: none;
+}
+
+.detailsToggleLink a:active{
+  color: white;
+}
+
+.detailsToggleLink a:visited{
+  color: white;
+}
