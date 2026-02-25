@@ -1,6 +1,11 @@
+.card-wrapper{
+  /* min-height: 40rem; */
+}
+
 .card {
   /* display: inline-flex; */
   margin: 0.5rem;
+  /* margin-bottom: 4rem; */
   max-width: 18rem;
   background-color: rgba(255, 255, 255, 0.068);
   min-height: 30rem;
@@ -50,7 +55,7 @@ mat-card-title {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 0.5rem;
+  /* margin-bottom: 0.5rem; */
 }
 
 mat-card img {
@@ -64,22 +69,9 @@ mat-card-title {
 
 #product-details {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-height: 4rem;
-}
-
-.detailsToggleLink{
-  text-decoration-line: none;
-  text-decoration-color: none;
-}
-
-.detailsToggleLink a:active{
-  color: white;
-}
-
-.detailsToggleLink a:visited{
-  color: white;
+  min-height: 11rem;
 }

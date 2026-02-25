@@ -11,6 +11,7 @@ import {
   MatCardImage,
   MatCardMdImage,
 } from '@angular/material/card';
+import { MatExpansionModule, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatAccordion } from '@angular/material/expansion'
 import { MatGridTile } from '@angular/material/grid-list';
 import { MatIcon, MatIconRegistry } from '@angular/material/icon';
 import { IProduct, IUser } from '../../../types';
@@ -21,33 +22,43 @@ import { UserAPI } from '../../services/userAPI';
 
 @Component({
   selector: 'product-card',
-  imports: [MatCard, MatCardHeader, MatCardContent, MatIcon, MatButton, CurrencyPipe],
+  imports: [MatCard, MatCardHeader, MatCardContent, MatIcon, MatButton, CurrencyPipe, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatAccordion],
   template: `
     <!-- <mat-grid-tile> -->
+    <div class="card-wrapper">
     <mat-card class="card">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
       </mat-card-header>
       
-      <img
-        mat-card-image
-        src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
-        alt="Photo of a Shiba Inu"
-      />
+      <mat-accordion multi="false">
+        <mat-expansion-panel id="details-exp-panel" hideToggle [expanded]="!this.detailsToggled">
+           <img style="height: 11rem;margin:-1.4rem;margin-top: 0;margin-bottom: 1rem;"
+              mat-card-image
+              src="https://material.angular.dev/assets/img/examples/shiba2.jpg"
+              alt="Photo of a Shiba Inu"
+            />
+        </mat-expansion-panel>
+      </mat-accordion>
+      
+       
+      
       <mat-card-content>
+        
         <!-- <mat-card-title>{{productInfo().title}}</mat-card-title> -->
         <p class="card-title">{{ productInfo().title }}</p>
         
-        <a class="detailsToggleLink" (click)="handleDetailsToggle()" data-bs-toggle="collapse" data-bs-target="#collapsable-details">
-          @if(detailsToggled==false){more<mat-icon>expand_more</mat-icon>}
-          @else{less<mat-icon>expand_less</mat-icon>}
-        </a>
-        <div class="collapse {{this.productInfo().id}}" id="collapsable-details">
-          <p  id="product-details">
-            <a (click)="handleProductClick()">{{ productInfo().description }}</a>
-          </p>
-        </div>
-        
+        <mat-expansion-panel hideToggle id="details-exp-panel" style="margin-bottom: 0.5rem;">
+        <div id="product-details">{{ productInfo().description }}</div>
+          
+        <mat-expansion-panel-header (click)="handleDetailsToggle()">
+          <mat-panel-title style="margin-left: auto;margin-right: auto;">
+            @if(detailsToggled==true){<mat-icon>expand_more</mat-icon>}
+            @else{<mat-icon>expand_less</mat-icon>}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        </mat-expansion-panel>
+
         
         <p style="margin-bottom: 0.1rem; font-size:1rem">
           <span style="color: rgb(253, 127, 53);">{{
@@ -87,7 +98,7 @@ import { UserAPI } from '../../services/userAPI';
           </div>
         </div>
       </div>
-    </mat-card>
+    </mat-card></div>
     <!-- </mat-grid-tile> -->
   `,
   styleUrl: './product-card.css',
@@ -98,6 +109,7 @@ export class ProductCard {
   userInfo = input.required<IUser>();
   openProductPage = output<IProduct>();
   detailsToggled:boolean = false;
+
   favorite: string = '';
   inCart: string = '';
 
@@ -157,7 +169,9 @@ export class ProductCard {
   }
 
   handleDetailsToggle(){
+    
     this.detailsToggled = this.detailsToggled?false:true;
+    console.log("details toggled("+this.detailsToggled+") for "+this.productInfo().title)
   }
 
   addStyles = (args: Array<string>) => {

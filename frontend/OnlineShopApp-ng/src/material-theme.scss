@@ -18,11 +18,29 @@
   ));
 }
 
-
 #active-page{
   background-color: rgb(156, 156, 156);
  
 }
+
+#details-exp-panel{
+  @include mat.expansion-overrides((
+    container-background-color:rgba(255, 255, 255, 0),
+    container-elevation-shadow:none,
+    header-text-line-height:1rem,
+    header-collapsed-state-height:3rem,
+    container-text-line-height:1.5rem,
+    // container-text-size:4rem
+  ));
+}
+
+// #prod-img-panel{
+//   @include mat.expansion-overrides((
+//     container-shape:
+//   ));
+//}
+
+
 
 html {
   height: 100%;
