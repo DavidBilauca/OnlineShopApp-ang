@@ -40,13 +40,15 @@ import { UserAPI } from '../../services/userAPI';
         </span>
       </button>
       <mat-menu #menu="matMenu">
+        <a mat-menu-item routerLink="login"><mat-icon>login</mat-icon>Login</a>
         @if (!userSignedIn()) {
-          <a mat-menu-item routerLink="login">Login</a>
-          <a mat-menu-item routerLink="">Create Account</a>
+          <a mat-menu-item routerLink="login"><mat-icon>login</mat-icon>Login</a>
+          <a mat-menu-item routerLink=""><mat-icon>person_add</mat-icon>Create Account</a>
         }
         @else {
-          <a mat-menu-item>Log Out</a> 
-          <a mat-menu-item (click)="showFavoritesList()">Favorites</a> 
+          <a mat-menu-item><mat-icon>logout</mat-icon>Log Out</a> 
+          <a mat-menu-item (click)="showFavoritesList()"><mat-icon>favorite</mat-icon>Favorites</a> 
+          <a mat-menu-item (click)="showAccountSettings()"><mat-icon>settings</mat-icon>Account</a> 
         }
         
       </mat-menu>
@@ -65,6 +67,7 @@ export class Header {
   renderHomePage = output<void>();
   renderFavorites = output<void>();
   renderShoppingCart = output<void>();
+  renderAccountSettings = output<void>();
   username:string = "Guest";
   
 
@@ -75,6 +78,11 @@ ngOnChanges(){
   userSignedIn(){
     //console.log(this.userInfo());
     return this.userInfo().id!="";
+  }
+
+  showAccountSettings() {
+    if(this.userSignedIn())
+      this.renderAccountSettings.emit();
   }
 
   showFavoritesList(){

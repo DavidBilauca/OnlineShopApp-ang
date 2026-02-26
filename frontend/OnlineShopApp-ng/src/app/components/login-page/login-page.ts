@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FormGroup,FormControl,ReactiveFormsModule,Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -51,7 +52,7 @@ import { FormGroup,FormControl,ReactiveFormsModule,Validators } from '@angular/f
           <div class="row">
             <div class="col-lg-12" style="padding:2rem;margin: auto;">
               <input class="form-btn" type="submit" value="Sign-in" [disabled]="!profileForm.valid">
-              
+              <button class="form-btn" (click)="navigateHome()" style="margin-top:1rem ;">back to home</button>
             </div>
           </div>
         </div>
@@ -62,6 +63,7 @@ import { FormGroup,FormControl,ReactiveFormsModule,Validators } from '@angular/f
   styleUrl: './login-page.css',
 })
 export class LoginPage {
+  private router = inject(Router);
   profileForm = new FormGroup({
     email: new FormControl('',[Validators.email,Validators.required]),
     username: new FormControl('',[Validators.required,Validators.minLength(4),Validators.maxLength(30)]),
@@ -72,6 +74,10 @@ export class LoginPage {
   username:string = "";
   formInfo:string ="-";
   hidden:boolean=true;
+
+  navigateHome(){
+    this.router.navigate([""]);
+  }
 
   handleSubmit(){
     this.formInfo = this.profileForm.value.email+"; "+ this.profileForm.value.username +"; "+ "("+this.profileForm.value.password+")"

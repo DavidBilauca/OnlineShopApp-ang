@@ -19,10 +19,13 @@ import { CurrencyPipe } from '@angular/common';
 
 import { ProductAPI } from '../../services/productAPI';
 import { UserAPI } from '../../services/userAPI';
+import { MatDialog } from '@angular/material/dialog';
+import { InfoModal } from '../info-modal/info-modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'product-card',
-  imports: [MatCard, MatCardHeader, MatCardContent, MatIcon, MatButton, CurrencyPipe, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatAccordion],
+  imports: [MatCard, MatCardHeader, MatCardContent, MatIcon, MatButton, CurrencyPipe, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatAccordion],
   template: `
     <!-- <mat-grid-tile> -->
     <div class="card-wrapper">
@@ -104,6 +107,7 @@ import { UserAPI } from '../../services/userAPI';
   styleUrl: './product-card.css',
 })
 export class ProductCard {
+  private router = inject(Router);
   productApi = inject(ProductAPI);
   productInfo = input.required<IProduct>();
   userInfo = input.required<IUser>();
@@ -112,6 +116,9 @@ export class ProductCard {
 
   favorite: string = '';
   inCart: string = '';
+
+
+  readonly dialog = inject(MatDialog);
 
   padd0: string = 'padding:0;';
   border: string = 'border:1px solid;';
@@ -130,10 +137,21 @@ export class ProductCard {
     }
   }
 
+  openDialog():void {
+    const dialogRef = this.dialog.open(InfoModal,{data:"add to favorites"});
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result==true){
+        this.router.navigate(["/login"]);
+      }
+    })
+  }
+
   toggleFavorite() {
     // console.log('toggle favorite prevstate: ' + this.favorite);
     // console.log('toggle favorite product id: ' + JSON.stringify(this.productInfo()));
     // console.log('toggle favorite user id: ' + JSON.stringify(this.userInfo()));
+    this.openDialog();
+    return;
     if (this.userInfo().id == '') {
       console.log('Sign in to add favorites');
       return;
@@ -185,4 +203,3 @@ export class ProductCard {
   };
 
 }
-

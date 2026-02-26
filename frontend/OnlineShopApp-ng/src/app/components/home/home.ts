@@ -11,14 +11,16 @@ import { CategoryAPI } from '../../services/categoryAPI';
 import { UserAPI } from '../../services/userAPI';
 import { ListViewer } from "../list-viewer/list-viewer";
 
+import { MatDividerModule, MatDivider } from '@angular/material/divider';
 import { ShoppingCart } from "../shopping-cart/shopping-cart";
 import { ProductPage } from "../product-page/product-page";
+import { Settings } from "../settings/settings";
 
 // import {} from '../../assets'
 
 @Component({
   selector: 'home',
-  imports: [RouterOutlet, Header, ContentGrid, SideNav, NgOptimizedImage, ListViewer, ShoppingCart, ProductPage],
+  imports: [RouterOutlet, Header, ContentGrid, SideNav, NgOptimizedImage, ListViewer, ShoppingCart, ProductPage, Settings, MatDivider],
   template: `
     <main>
       <div class="hero">
@@ -32,7 +34,11 @@ import { ProductPage } from "../product-page/product-page";
         />
       </div>
 
-      <app-header [userInfo]="defaultUser" [activePage]="this.displayedPage" (renderFavorites)="renderFavorites($event)" (renderShoppingCart)="renderShoppingCart($event)" (renderHomePage)="renderHomePage($event)"/>
+      <app-header [userInfo]="defaultUser" [activePage]="this.displayedPage" 
+      (renderFavorites)="renderFavorites($event)" 
+      (renderShoppingCart)="renderShoppingCart($event)" 
+      (renderHomePage)="renderHomePage($event)"
+      (renderAccountSettings)="renderAccountSettings($event)"/>
       <div class="container-flex" >
         <div class="row">
           <div class="col-lg-12"></div>
@@ -42,7 +48,7 @@ import { ProductPage } from "../product-page/product-page";
             <side-nav [categories]="categories" (toggleEvent)="setFilters($event)" />
           </div> -->
           @if(displayHome()){
-            <div class="col-lg-10">
+            <div class="col-lg-10" style="margin-left: auto;margin-right: auto;">
               <content-grid [products]="products" [filters]="filters" [userInfo]="defaultUser" (openProductPage)="handleOpenProductPage($event)"/>
             </div>
           }
@@ -63,8 +69,16 @@ import { ProductPage } from "../product-page/product-page";
               <product-page [productInfo]="selectedProduct" [userInfo]="defaultUser"/>
             </div>
           }
+          @if(displayAccountSettings()){
+             <div class="col-lg-12">
+              <settings/>
+            </div>
+          }
           
-          <div class="col-sm-2"></div>
+          <!-- <div class="col-sm-2"></div> -->
+        </div>
+        <div class="row" style="margin-top: 1rem;min-height: 10rem;background-color: black;">
+          <mat-divider/>
         </div>
       </div>
     </main>
@@ -100,6 +114,7 @@ export class Home {
   displayFavorites = () => this.displayedPage == DisplayedPage.Favorites;
   displayShoppingCart = () => this.displayedPage == DisplayedPage.ShoppingCart;
   displayProductPage = () => this.displayedPage == DisplayedPage.Product;
+  displayAccountSettings = () => this.displayedPage == DisplayedPage.Settings;
 
   constructor () {
     const nullUser: IUser = {
@@ -170,7 +185,10 @@ export class Home {
   renderShoppingCart($event: void) {
     this.displayedPage = DisplayedPage.ShoppingCart;
   }
-  
+
+  renderAccountSettings($event:void) {
+    this.displayedPage = DisplayedPage.Settings;
+  }
 
 }
 const enum DisplayedPage {

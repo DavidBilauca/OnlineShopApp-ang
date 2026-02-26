@@ -1,0 +1,23 @@
+#side-menu {
+    position: sticky;
+    position: -webkit-sticky;
+    top:5rem;
+    margin-left: 1rem;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    min-height: 40rem;
+    max-width: auto;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.068);
+}
+
+#main-content{
+    top:5rem;
+    margin-left: 1rem;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    min-height: 40rem;
+    max-width: auto;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.068);
+}
