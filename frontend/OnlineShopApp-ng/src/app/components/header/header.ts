@@ -13,54 +13,71 @@ import { UserAPI } from '../../services/userAPI';
   template: `
     <mat-toolbar>
       <!-- <div > -->
-      <mat-icon>storefront</mat-icon>
-      <span style="font-size: larger;margin-left: 0.5rem;">OnlineShopApp</span>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-8">
+            <div class="row">
+              <div class="col-md-3">
+                <mat-icon>storefront</mat-icon>
+                <span style="font-size: larger;margin-left: 0.5rem;">OnlineShopApp</span>
+                <!-- <span class="header-spacer"></span> -->
+              </div>
+              <div class="col-md-7">
+                <div class="button-group">
+                  @if (activePage() == 0) {
+                    <button matButton="elevated" class="header-button" id="active-page">
+                      Products
+                    </button>
+                  } @else {
+                    <button matButton="elevated" class="header-button" (click)="goToHome()">
+                      Products
+                    </button>
+                  }
 
-      <span class="header-spacer"></span>
-      <div class="button-group">
-        @if(activePage()==0){
-          <button matButton="elevated" class="header-button" id="active-page">Products</button>
-        }
-        @else {
-          <button matButton="elevated" class="header-button" (click)="goToHome()">Products</button>
-        }
-        
-        <button matButton="elevated" class="header-button">Search</button>
+                  <button matButton="elevated" class="header-button">Search</button>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="row">
+                <div class="col-md-6"> 
+                  <button matButton class="header-button" (click)="handleOpenShoppingCart()">
+                  <mat-icon fontIcon="shopping_basket"></mat-icon></button>
+                </div>
+                <div class="col-md-6">
+                  <button matButton class="header-button" [matMenuTriggerFor]="menu">
+                    <span>
+                      {{ username }}
+                    </span>
+                    <span class="material-symbols-outlined" style="vertical-align: middle;size: 1rem;">
+                      account_circle
+                    </span>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <a mat-menu-item routerLink="login"><mat-icon>login</mat-icon>Login</a>
+                    @if (!userSignedIn()) {
+                      <a mat-menu-item routerLink="login"><mat-icon>login</mat-icon>Login</a>
+                      <a mat-menu-item routerLink=""><mat-icon>person_add</mat-icon>Create Account</a>
+                    } @else {
+                      <a mat-menu-item><mat-icon>logout</mat-icon>Log Out</a>
+                      <a mat-menu-item (click)="showFavoritesList()"><mat-icon>favorite</mat-icon>Favorites</a>
+                      <a mat-menu-item (click)="showAccountSettings()"><mat-icon>settings</mat-icon>Account</a>
+                    }
+                  </mat-menu>
+                </div>
+            </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
       </div>
-      <span class="header-spacer"></span>
-      <button matButton class="header-button" (click)="handleOpenShoppingCart()">
-        <mat-icon  fontIcon="shopping_basket"></mat-icon>
-      </button>
-      <button matButton class="header-button" [matMenuTriggerFor]="menu">
-        <span>
-        {{username}}
-         </span>
-        <span class="material-symbols-outlined" style="vertical-align: middle;size: 1rem;">
-          account_circle
-        </span>
-      </button>
-      <mat-menu #menu="matMenu">
-        <a mat-menu-item routerLink="login"><mat-icon>login</mat-icon>Login</a>
-        @if (!userSignedIn()) {
-          <a mat-menu-item routerLink="login"><mat-icon>login</mat-icon>Login</a>
-          <a mat-menu-item routerLink=""><mat-icon>person_add</mat-icon>Create Account</a>
-        }
-        @else {
-          <a mat-menu-item><mat-icon>logout</mat-icon>Log Out</a> 
-          <a mat-menu-item (click)="showFavoritesList()"><mat-icon>favorite</mat-icon>Favorites</a> 
-          <a mat-menu-item (click)="showAccountSettings()"><mat-icon>settings</mat-icon>Account</a> 
-        }
-        
-      </mat-menu>
-
-      <!-- </div> -->
     </mat-toolbar>
     <router-outlet />
   `,
   styleUrl: './header.css',
 })
 export class Header {
-
   userAPIService = inject(UserAPI);
   userInfo = input.required<IUser>();
   activePage = input.required<number>();
@@ -68,35 +85,30 @@ export class Header {
   renderFavorites = output<void>();
   renderShoppingCart = output<void>();
   renderAccountSettings = output<void>();
-  username:string = "Guest";
-  
+  username: string = 'Guest';
 
-ngOnChanges(){
-  this.username = this.userInfo().username;
-}
+  ngOnChanges() {
+    this.username = this.userInfo().username;
+  }
 
-  userSignedIn(){
+  userSignedIn() {
     //console.log(this.userInfo());
-    return this.userInfo().id!="";
+    return this.userInfo().id != '';
   }
 
   showAccountSettings() {
-    if(this.userSignedIn())
-      this.renderAccountSettings.emit();
+    if (this.userSignedIn()) this.renderAccountSettings.emit();
   }
 
-  showFavoritesList(){
-    if(this.userSignedIn())
-      this.renderFavorites.emit();
+  showFavoritesList() {
+    if (this.userSignedIn()) this.renderFavorites.emit();
   }
 
   handleOpenShoppingCart() {
-    if(this.userSignedIn())
-      this.renderShoppingCart.emit();
+    if (this.userSignedIn()) this.renderShoppingCart.emit();
   }
 
-  goToHome(){
+  goToHome() {
     this.renderHomePage.emit();
   }
-
 }

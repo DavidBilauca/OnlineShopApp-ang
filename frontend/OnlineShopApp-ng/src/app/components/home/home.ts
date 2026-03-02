@@ -71,7 +71,7 @@ import { Settings } from "../settings/settings";
           }
           @if(displayAccountSettings()){
              <div class="col-lg-12">
-              <settings/>
+              <settings [userInfo]="this.defaultUser"/>
             </div>
           }
           

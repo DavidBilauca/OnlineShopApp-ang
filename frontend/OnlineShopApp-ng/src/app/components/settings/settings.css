@@ -14,10 +14,25 @@
 #main-content{
     top:5rem;
     margin-left: 1rem;
-    padding-left: 1rem;
+    padding-left: 0.5rem;
     padding-top: 1rem;
+    padding-right: 0.5rem;
     min-height: 40rem;
     max-width: auto;
     border-radius: 1rem;
     background-color: rgba(255, 255, 255, 0.068);
+}
+
+.text-icon{
+    vertical-align: middle;
+    margin: auto;
+    font-size: 1.5rem;
+    width: auto;
+    height: 2rem;
+    line-height: 1.7rem;
+}
+
+.settings-divider{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
