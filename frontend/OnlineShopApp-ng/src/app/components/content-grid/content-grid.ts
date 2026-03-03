@@ -1,12 +1,16 @@
-import { Component, input, output } from '@angular/core';
+import { Component, effect, inject, input, output, Signal, viewChild } from '@angular/core';
 
 import { ProductCard } from '../product-card/product-card';
 import { Filters, ICategory, IProduct, IUser } from '../../../types';
 import { MockProducts, Categories } from '../../mockdata';
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, ViewportScroller } from '@angular/common';
 import { ProductListFormat } from '../product-list-format/product-list-format';
 import { MatAnchor } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Router, Scroll } from '@angular/router';
+import { filter, map } from 'rxjs';
+import is from '@angular/common/locales/is';
 
 @Component({
   selector: 'content-grid',
@@ -61,6 +65,7 @@ import { MatIcon } from '@angular/material/icon';
                 </div>
               }
             }
+            <div #scrolling></div>
           } @placeholder {
             <h1>No products available, Try again later</h1>
           } @loading (minimum 1s) {
@@ -85,6 +90,23 @@ export class ContentGrid {
   colStyle: string = 'padding:0;margins:0';
   productViewStyle: ViewStyle = ViewStyle.Grid;
 
+  viewportScroller = inject(ViewportScroller);
+  scrollingRef = viewChild<HTMLElement>('scrolling');
+
+  constructor(){
+    const scrollingPosition: Signal<[number,number] | undefined> = toSignal(
+      inject(Router).events.pipe(
+        filter((event):event is Scroll=> event instanceof Scroll),
+        map((event:Scroll)=>event.position || [0,0])
+      )
+    );
+
+    effect(()=>{
+      if(this.scrollingRef() && scrollingPosition()) {
+        this.viewportScroller.scrollToPosition(scrollingPosition()!);
+      }
+    });
+  }
 
   handleOpenProductPage(product:IProduct){
     this.openProductPage.emit(product);

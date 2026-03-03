@@ -1,11 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, effect, inject, Signal, signal, viewChild } from '@angular/core';
+import { Router, RouterOutlet, Scroll } from '@angular/router';
 import { Header } from '../header/header';
 import { ContentGrid } from '../content-grid/content-grid';
 import { SideNav } from '../side-nav/side-nav';
 import {Filters, ICategory, IProduct, IUser } from '../../../types';
 import { Categories, MockProducts } from '../../mockdata';
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, ViewportScroller } from '@angular/common';
 import { ProductAPI } from '../../services/productAPI';
 import { CategoryAPI } from '../../services/categoryAPI';
 import { UserAPI } from '../../services/userAPI';
@@ -15,6 +15,8 @@ import { MatDividerModule, MatDivider } from '@angular/material/divider';
 import { ShoppingCart } from "../shopping-cart/shopping-cart";
 import { ProductPage } from "../product-page/product-page";
 import { Settings } from "../settings/settings";
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, map } from 'rxjs';
 
 // import {} from '../../assets'
 
@@ -116,6 +118,9 @@ export class Home {
   displayProductPage = () => this.displayedPage == DisplayedPage.Product;
   displayAccountSettings = () => this.displayedPage == DisplayedPage.Settings;
 
+  // viewportScroller = inject(ViewportScroller);
+  // scrollingRef = viewChild<HTMLElement>('scrolling');
+  
   constructor () {
     const nullUser: IUser = {
       id:"",
@@ -139,6 +144,19 @@ export class Home {
         this.defaultUser.shoppingCart = result;
         console.log(JSON.stringify(result));
       })
+
+      // const scrollingPosition: Signal<[number,number] | undefined> = toSignal(
+      //   inject(Router).events.pipe(
+      //     filter((event):event is Scroll=> event instanceof Scroll),
+      //     map((event:Scroll)=>event.position || [0,0])
+      //   )
+      // );
+  
+      // effect(()=>{
+      //   if(this.scrollingRef() && scrollingPosition()) {
+      //     this.viewportScroller.scrollToPosition(scrollingPosition()!);
+      //   }
+      // });
 
     });
 

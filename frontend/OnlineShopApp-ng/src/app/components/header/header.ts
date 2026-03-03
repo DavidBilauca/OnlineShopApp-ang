@@ -3,7 +3,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { IProduct, IUser } from '../../../types';
 import { UserAPI } from '../../services/userAPI';
 
@@ -78,6 +78,7 @@ import { UserAPI } from '../../services/userAPI';
   styleUrl: './header.css',
 })
 export class Header {
+  private router = inject(Router);
   userAPIService = inject(UserAPI);
   userInfo = input.required<IUser>();
   activePage = input.required<number>();
@@ -97,7 +98,10 @@ export class Header {
   }
 
   showAccountSettings() {
-    if (this.userSignedIn()) this.renderAccountSettings.emit();
+    if (!this.userSignedIn())return;
+    //this.router.navigate(["/account"]);
+    this.renderAccountSettings.emit();
+    
   }
 
   showFavoritesList() {
