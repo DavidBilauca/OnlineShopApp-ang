@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Filters, IListItem, IProduct, IUser } from '../../../types';
 import { ProductListFormat } from '../product-list-format/product-list-format';
 import { ProductCard } from '../product-card/product-card';
@@ -8,6 +8,7 @@ import { ProductAPI } from '../../services/productAPI';
 import { CurrencyPipe, JsonPipe } from '@angular/common';
 import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
 import { ProductCartItem } from "../product-cart-item/product-cart-item";
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'shopping-cart',
@@ -40,8 +41,11 @@ import { ProductCartItem } from "../product-cart-item/product-cart-item";
             <div class="row" style="padding:0;margins:0">
               <div class="col-lg-10">
                 <product-cart-item
-                  [productInfo]="items()[$index]"
+                  [productInfo]="items()[$index].product"
+                  [listItemInfo]="items()[$index]"
                   [userInfo]="userInfo()"
+                  (itemToggled)="handleToggleCartItem()"
+                  (refetchUserData)="handleRefetch()"
                 ></product-cart-item>
               </div>
             </div>
@@ -68,6 +72,8 @@ import { ProductCartItem } from "../product-cart-item/product-cart-item";
 export class ShoppingCart {
   productsAPI = inject(ProductAPI);
   items = input.required<Array<IListItem>>();
+
+  refetchUserData = output<void>();
   //inputsLoaded:boolean = false;
 
   //filters = input.required<Filters>();
@@ -76,9 +82,19 @@ export class ShoppingCart {
   productViewStyle: ViewStyle = ViewStyle.List;
   inputsLoaded: boolean = false;
 
+  private cdr = inject(ChangeDetectorRef);
+
   ngOnInit() {
     this.inputsLoaded = true;
     this.items().forEach(item=>console.log("ShoppingCart Item: "+JSON.stringify(item)));
+  }
+
+  handleRefetch(){
+    this.refetchUserData.emit();
+  }
+
+  handleToggleCartItem() {
+    this.cdr.detectChanges();
   }
 
   viewStyleGrid = () => {

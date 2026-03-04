@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, input } from '@angular/core';
 import { MockProducts } from '../mockdata';
 import { IListItem, IProduct } from '../../types';
 import { HttpStatusCode } from '@angular/common/http';
@@ -8,6 +8,8 @@ import { catchError } from 'rxjs';
   providedIn: 'root',
 })
 export class ProductAPI {
+
+
   mock_getAllProducts() {
     return MockProducts;
   }
@@ -49,11 +51,11 @@ export class ProductAPI {
       return data as IProduct;
   }
 
-  async toggleCartItem(cartItemId:string,userId:string){
+  async toggleCartItem(productId:string,userId:string){
     var cartItemState;
     
     //  const result = await fetch('https://localhost:7060/api/Shopping', {
-    const result = await fetch('http://localhost:8080/Shopping/toggleCartItem/'+cartItemId, {
+    const result = await fetch('http://localhost:8080/Shopping/toggleCartItem/'+productId, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

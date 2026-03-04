@@ -112,6 +112,7 @@ export class ProductCard {
   productInfo = input.required<IProduct>();
   userInfo = input.required<IUser>();
   openProductPage = output<IProduct>();
+  refetchUserData = output<void>();
   detailsToggled:boolean = false;
 
   favorite: string = '';
@@ -150,8 +151,8 @@ export class ProductCard {
     // console.log('toggle favorite prevstate: ' + this.favorite);
     // console.log('toggle favorite product id: ' + JSON.stringify(this.productInfo()));
     // console.log('toggle favorite user id: ' + JSON.stringify(this.userInfo()));
-    this.openDialog();
-    return;
+    //this.openDialog();
+    //return;
     if (this.userInfo().id == '') {
       console.log('Sign in to add favorites');
       return;
@@ -165,6 +166,8 @@ export class ProductCard {
       if (result) this.favorite = 'favorite-set';
       else this.favorite = '';
     });
+
+    this.refetchUserData.emit();
   }
 
   toggleCartItem(){
@@ -179,6 +182,7 @@ export class ProductCard {
       if (result) this.inCart = 'in-cart';
       else this.inCart = '';
     })
+    this.refetchUserData.emit();
   }
 
   handleProductClick(){

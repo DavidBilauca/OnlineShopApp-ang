@@ -1,10 +1,11 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { IListItem, IProduct, IUser } from '../../../types';
 import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatMiniFabButton } from '@angular/material/button';
 import { ProductAPI } from '../../services/productAPI';
+import { ProductCard } from '../product-card/product-card';
 
 @Component({
   selector: 'product-cart-item',
@@ -27,18 +28,18 @@ import { ProductAPI } from '../../services/productAPI';
             </div>
             <div class="col">
               <mat-card-content>
-                <p class="card-title">{{ productInfo().product.title }}</p>
+                <p class="card-title">{{ listItemInfo().product.title }}</p>
                 <p id="product-details">
-                  {{ productInfo().product.description }}
+                  {{ listItemInfo().product.description }}
                 </p>
                 <p id="price">
                   <span >{{
-                    productInfo().product.price | currency: 'RON '
+                    listItemInfo().product.price | currency: 'RON '
                   }}</span>
                 </p>
                 <p id="rating">
                   Rating:
-                  <span>{{ productInfo().product.rating }} /5</span>
+                  <span>{{ listItemInfo().product.rating }} /5</span>
                 </p>
               </mat-card-content>
             </div>
@@ -65,16 +66,16 @@ import { ProductAPI } from '../../services/productAPI';
                 <div class="row">
                   <div class="col">
                   <div class="btn-group" id="quantity-btn-group">
-                    <button matButton type="button" class="btn" (click)="handleSubtract(productInfo())">
+                    <button matButton type="button" class="btn" (click)="handleSubtract(listItemInfo())">
                       <mat-icon>remove</mat-icon>
                     </button>
                     <input
                       type="text"
-                      (value)="productInfo().quantity"
-                      [defaultValue]="productInfo().quantity"
+                      (value)="listItemInfo().quantity"
+                      [defaultValue]="listItemInfo().quantity"
                       class="quantityDisplay"
                     />
-                    <button matButton type="button" class="btn" (click)="handleAdd(productInfo())">
+                    <button matButton type="button" class="btn" (click)="handleAdd(listItemInfo())">
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
@@ -106,42 +107,46 @@ import { ProductAPI } from '../../services/productAPI';
   `,
   styleUrl: './product-cart-item.css',
 })
-export class ProductCartItem {
+export class ProductCartItem extends ProductCard {
   productsApi = inject(ProductAPI);
-  productInfo = input.required<IListItem>();
-  userInfo = input.required<IUser>();
-  favorite: string = '';
-  inCart: string = '';
+  listItemInfo = input.required<IListItem>();
+  itemToggled = output<void>();
+  
+  override toggleCartItem(){
+    super.toggleCartItem();
+    this.itemToggled.emit();
+  }
+
   inputsLoaded: boolean = false;
 
-  padd0: string = 'padding:0;';
-  border: string = 'border:1px solid;';
-  autoMargins: string = 'margin-left:auto;margin-right:auto;margin-bottom:2rem';
-  autoPadd: string = 'padding:auto;';
+  // padd0: string = 'padding:0;';
+  // border: string = 'border:1px solid;';
+  // autoMargins: string = 'margin-left:auto;margin-right:auto;margin-bottom:2rem';
+  // autoPadd: string = 'padding:auto;';
   fitWidth: string = 'width:auto;';
-  center: string = 'padding:auto;';
+  // center: string = 'padding:auto;';
 
   ngOnInit() {
     //console.log("Product list format: "+JSON.stringify(this.productInfo()));
     this.inputsLoaded = true;
   }
 
-  ngOnChanges() {
-    if (
-      this.userInfo().favorites.filter((fav) => fav.id == this.productInfo().product.id).length > 0
-    ) {
-      console.log('Product card: ' + this.productInfo().product.title + ' is set to fav');
-      this.favorite = 'favorite-set';
-    }
-    if (
-      this.userInfo().shoppingCart.filter(
-        (cartItem) => cartItem.product.id == this.productInfo().product.id,
-      ).length > 0
-    ) {
-      console.log('Product card: ' + this.productInfo().product.title + ' is added to cart');
-      this.inCart = 'in-cart';
-    }
-  }
+  // ngOnChanges() {
+  //   if (
+  //     this.userInfo().favorites.filter((fav) => fav.id == this.listItemInfo().product.id).length > 0
+  //   ) {
+  //     console.log('Product card: ' + this.listItemInfo().product.title + ' is set to fav');
+  //     this.favorite = 'favorite-set';
+  //   }
+  //   if (
+  //     this.userInfo().shoppingCart.filter(
+  //       (cartItem) => cartItem.product.id == this.listItemInfo().product.id,
+  //     ).length > 0
+  //   ) {
+  //     console.log('Product card: ' + this.listItemInfo().product.title + ' is added to cart');
+  //     this.inCart = 'in-cart';
+  //   }
+  // }
 
   handleSubtract(item: IListItem) {
     item.quantity -= 1;
@@ -154,42 +159,42 @@ export class ProductCartItem {
     this.ngOnInit();
   }
 
-  toggleFavorite() {
-    if (this.userInfo().id == '') {
-      console.log('Sign in to add favorites');
-      return;
-    }
+  // toggleFavorite() {
+  //   if (this.userInfo().id == '') {
+  //     console.log('Sign in to add favorites');
+  //     return;
+  //   }
 
-    if (this.favorite == '') this.favorite = 'favorite-set';
-    else this.favorite = '';
+  //   if (this.favorite == '') this.favorite = 'favorite-set';
+  //   else this.favorite = '';
 
-    this.productsApi.setFavorite(this.productInfo().id, this.userInfo().id).then((result) => {
-      console.log('setFavorite result: ' + result);
-      if (result) this.favorite = 'favorite-set';
-      else this.favorite = '';
-    });
-  }
+  //   this.productsApi.setFavorite(this.listItemInfo().id, this.userInfo().id).then((result) => {
+  //     console.log('setFavorite result: ' + result);
+  //     if (result) this.favorite = 'favorite-set';
+  //     else this.favorite = '';
+  //   });
+  // }
 
-  toggleCartItem() {
-    if (this.userInfo().id == '') {
-      console.log('Sign in to add products to cart');
-      return;
-    }
-    if (this.inCart == '') this.inCart = 'in-cart';
-    else this.inCart = '';
-    this.productsApi.toggleCartItem(this.productInfo().id, this.userInfo().id).then((result) => {
-      console.log('toggleCartItem result: ' + result);
-      if (result) this.inCart = 'in-cart';
-      else this.inCart = '';
-    });
-  }
+  // toggleCartItem() {
+  //   if (this.userInfo().id == '') {
+  //     console.log('Sign in to add products to cart');
+  //     return;
+  //   }
+  //   if (this.inCart == '') this.inCart = 'in-cart';
+  //   else this.inCart = '';
+  //   this.productsApi.toggleCartItem(this.listItemInfo().id, this.userInfo().id).then((result) => {
+  //     console.log('toggleCartItem result: ' + result);
+  //     if (result) this.inCart = 'in-cart';
+  //     else this.inCart = '';
+  //   });
+  // }
 
-  addStyles = (args: Array<string>) => {
-    var result = '';
-    args.forEach((arg) => (result = result.concat(arg)));
-    return result;
-  };
-  testStyle = () => {
-    return this.padd0.concat(this.border);
-  };
+  // addStyles = (args: Array<string>) => {
+  //   var result = '';
+  //   args.forEach((arg) => (result = result.concat(arg)));
+  //   return result;
+  // };
+  // testStyle = () => {
+  //   return this.padd0.concat(this.border);
+  // };
 }

@@ -45,7 +45,7 @@ import is from '@angular/common/locales/is';
           <product-card [productInfo]="products()[$index]"></product-card>
         </div> -->
                 <div class="col-md-2" style="padding:0;margins:0">
-                  <product-card [productInfo]="products()[$index]" [userInfo]="userInfo()" (openProductPage)="handleOpenProductPage($event)"></product-card>
+                  <product-card [productInfo]="products()[$index]" [userInfo]="userInfo()" (refetchUserData)="handleRefetch()" (openProductPage)="handleOpenProductPage($event)"></product-card>
                 </div>
               }
             }
@@ -86,7 +86,8 @@ export class ContentGrid {
   userInfo = input.required<IUser>();
 
   openProductPage = output<IProduct>();
-
+  refetchUserData = output<void>();
+  
   colStyle: string = 'padding:0;margins:0';
   productViewStyle: ViewStyle = ViewStyle.Grid;
 
@@ -106,6 +107,10 @@ export class ContentGrid {
         this.viewportScroller.scrollToPosition(scrollingPosition()!);
       }
     });
+  }
+
+  handleRefetch(){
+    this.refetchUserData.emit();
   }
 
   handleOpenProductPage(product:IProduct){

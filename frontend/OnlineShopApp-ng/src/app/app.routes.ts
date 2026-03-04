@@ -9,10 +9,6 @@ export const routes: Routes = [
         component:Home,
 },
 {
-        path:'account',
-        component:Home,
-},
-{
     path:'login',
     component:LoginPage
 }

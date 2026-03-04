@@ -11,7 +11,6 @@ import { NgOptimizedImage } from '@angular/common';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
-  //templateUrl: './app.html',
   template: `
     <router-outlet />
   `,

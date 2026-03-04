@@ -1,4 +1,4 @@
-import { Component, effect, inject, Signal, signal, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, output, Signal, signal, viewChild } from '@angular/core';
 import { Router, RouterOutlet, Scroll } from '@angular/router';
 import { Header } from '../header/header';
 import { ContentGrid } from '../content-grid/content-grid';
@@ -17,6 +17,8 @@ import { ProductPage } from "../product-page/product-page";
 import { Settings } from "../settings/settings";
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
+
+
 
 // import {} from '../../assets'
 
@@ -51,7 +53,7 @@ import { filter, map } from 'rxjs';
           </div> -->
           @if(displayHome()){
             <div class="col-lg-10" style="margin-left: auto;margin-right: auto;">
-              <content-grid [products]="products" [filters]="filters" [userInfo]="defaultUser" (openProductPage)="handleOpenProductPage($event)"/>
+              <content-grid [products]="products" [filters]="filters" [userInfo]="defaultUser" (refetchUserData)="handleRefetch()" (openProductPage)="handleOpenProductPage($event)"/>
             </div>
           }
           @if(displayFavorites()){
@@ -62,7 +64,7 @@ import { filter, map } from 'rxjs';
           @if(displayShoppingCart()){
             @defer(when inputsLoaded){
             <div class="col-lg-10">
-              <shopping-cart [items]="this.defaultUser.shoppingCart" [userInfo]="defaultUser"/>
+              <shopping-cart [items]="this.defaultUser.shoppingCart" [userInfo]="defaultUser" (refetchUserData)="handleRefetch()"/>
             </div>
             }
           }
@@ -89,20 +91,15 @@ import { filter, map } from 'rxjs';
   styleUrl: './home.css',
 })
 export class Home {
-  productAPIService = inject(ProductAPI);
-  categoryAPIService = inject(CategoryAPI);
-  userAPIService = inject (UserAPI);
+  productApi = inject(ProductAPI);
+  categoryApi = inject(CategoryAPI);
+  userApi = inject (UserAPI);
+
+  refetch = output<void>();
 
   defaultUser :IUser;
-  nullProduct:IProduct={
-    id: '',
-    title: '',
-    price: 0,
-    rating: 0,
-    category: Categories.None,
-    categoryId: ''
-  }
-  selectedProduct: IProduct = this.nullProduct;
+  
+  selectedProduct: IProduct = nullProduct;
 
   products: IProduct[] = [];
   favorites:IProduct[]=[];
@@ -118,66 +115,60 @@ export class Home {
   displayProductPage = () => this.displayedPage == DisplayedPage.Product;
   displayAccountSettings = () => this.displayedPage == DisplayedPage.Settings;
 
+  
+  private cdr = inject(ChangeDetectorRef);
+
   // viewportScroller = inject(ViewportScroller);
   // scrollingRef = viewChild<HTMLElement>('scrolling');
   
   constructor () {
-    const nullUser: IUser = {
-      id:"",
-      email:"",
-      username:"",
-      favorites:[],
-      shoppingCart:[]
-    };
     this.defaultUser = nullUser;
     //!!! update backend to retrieve the authenticated user after auth implementation
-    this.userAPIService.getDefaultUser().then(result=>{
-      if(result != null)
-        this.defaultUser = result;
+    this.refetchUserData();
+    this.refetchProductData();
+  }
 
-      this.userAPIService.getFavorites(this.defaultUser.id).then(result=>{
+  public handleRefetch(){
+    console.log("refetch requested");
+    this.refetchUserData();
+    this.cdr.detectChanges()
+  }
+
+  public async refetchUserData() {
+    this.userApi.getDefaultUser().then((result) => {
+      if (result != null) this.defaultUser = result;
+
+      this.userApi.getFavorites(this.defaultUser.id).then((result) => {
         this.defaultUser.favorites = result;
         //console.log(JSON.stringify(result));
-      })
+      });
 
-      this.userAPIService.getShoppingCartItems(this.defaultUser.id).then(result=>{
+      this.userApi.getShoppingCartItems(this.defaultUser.id).then((result) => {
         this.defaultUser.shoppingCart = result;
-        console.log(JSON.stringify(result));
-      })
-
-      // const scrollingPosition: Signal<[number,number] | undefined> = toSignal(
-      //   inject(Router).events.pipe(
-      //     filter((event):event is Scroll=> event instanceof Scroll),
-      //     map((event:Scroll)=>event.position || [0,0])
-      //   )
-      // );
-  
-      // effect(()=>{
-      //   if(this.scrollingRef() && scrollingPosition()) {
-      //     this.viewportScroller.scrollToPosition(scrollingPosition()!);
-      //   }
-      // });
-
-    });
-
-    this.categoryAPIService.getAllCategories().then(result=>{
-      this.categories = result;
-      // console.log("home constructor: "+JSON.stringify(result));
-    });
-    this.productAPIService.getAllProducts().then(result=>{
-      this.products = result;
-      //console.log("home constructor: "+JSON.stringify(result.map(p=>p.id)));
+        //console.log(JSON.stringify(result));
+      });
     });
   }
 
+  public async refetchProductData(){
+    this.categoryApi.getAllCategories().then(result=>{
+          this.categories = result;
+          // console.log("home constructor: "+JSON.stringify(result));
+        });
+    this.productApi.getAllProducts().then(result=>{
+          this.products = result;
+          console.log("app context constructor: "+JSON.stringify(result.map(p=>p.id)));
+        });
+  }
   
 
   handleOpenProductPage(product:IProduct){
     this.selectedProduct = product;
     this.displayedPage = DisplayedPage.Product;
+    
   }
 
-    ngOnInit(){
+    async ngOnInit(){
       this.inputsLoaded = true;
     }
 
@@ -217,3 +208,21 @@ const enum DisplayedPage {
   ShoppingCart,
   Product
 }
+
+export const nullProduct:IProduct={
+    id: '',
+    title: '',
+    price: 0,
+    rating: 0,
+    category: Categories.None,
+    categoryId: ''
+  }
+
+
+export const nullUser: IUser = {
+  id: '',
+  email: '',
+  username: '',
+  favorites: [],
+  shoppingCart: [],
+};
