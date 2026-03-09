@@ -112,10 +112,10 @@ export class ProductCartItem extends ProductCard {
   listItemInfo = input.required<IListItem>();
   itemToggled = output<void>();
   
-  override toggleCartItem(){
-    super.toggleCartItem();
-    this.itemToggled.emit();
-  }
+  // override toggleCartItem(){
+  //   super.toggleCartItem();
+  //   this.itemToggled.emit();
+  // }
 
   inputsLoaded: boolean = false;
 

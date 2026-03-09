@@ -1,32 +1,24 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogContent, MatDialogActions, MatDialogRef, MAT_DIALOG_DATA, MatDialogClose } from '@angular/material/dialog';
 import { MatAnchor } from "@angular/material/button";
-import { RouterOutlet,RouterLink } from "@angular/router";
 import { IUser } from '../../../types';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { UpperCasePipe } from '@angular/common';
 import { MatInput } from '@angular/material/input';
-import { BillingInfoModalConfig } from '../settings/settings';
 import { MatDivider } from "@angular/material/divider";
-import { MatRadioButton } from '@angular/material/radio';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { UserAPI } from '../../services/userAPI';
 
 
 @Component({
-  selector: 'billing-info-modal',
-  imports: [MatDialogContent, MatDialogActions, MatAnchor, MatDialogClose, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, UpperCasePipe, MatInput, MatDivider,MatRadioButton,MatCheckbox],
+  selector: 'shipping-info-modal',
+  imports: [MatDialogContent, MatDialogActions, MatAnchor, MatDialogClose, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, UpperCasePipe, MatInput, MatDivider],
   template: `
   <mat-dialog-content>
-    <h4>New billing info</h4>
+    <h4>New shipping (delivery) info</h4>
   </mat-dialog-content>
   <form [formGroup]="dialogForm" (ngSubmit)="handleSubmit()" style="padding:1rem">
 
-    
-    <mat-form-field>
-      <mat-label>Full name</mat-label>
-      <input matInput #input placeholder="first name LAST NAME"/>
-    </mat-form-field>
     <mat-form-field>
       <mat-label>Country</mat-label>
       <input matInput #input/>
@@ -55,31 +47,28 @@ import { MatCheckbox } from '@angular/material/checkbox';
       <mat-label>Zip code</mat-label>
       <input matInput #input />
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Phone number</mat-label>
-      <input matInput #input />
-    </mat-form-field>
 
   </form>
 
   <mat-dialog-actions>
-    <button matButton="filled" [mat-dialog-close]="true">Submit</button>
+    <button matButton="filled" [mat-dialog-close]="true" (click)="handleSubmit()">Submit</button>
     <button matButton="outlined" (click)="onNoClick()">Cancel</button>
   </mat-dialog-actions>
   `,
-  styleUrl: './dialog-modal.css',
+  styleUrl: './shipping-info-modal.css',
 })
-export class BillingInfoModal {
-  readonly dialogRef = inject(MatDialogRef<BillingInfoModal>);
+export class ShippingInfoModal {
+  readonly dialogRef = inject(MatDialogRef<ShippingInfoModal>);
   readonly data = inject<IUser>(MAT_DIALOG_DATA);
+  userApi = inject(UserAPI);
   dialogForm = new FormGroup({
     email: new FormControl('',[Validators.email,Validators.required]),
     username: new FormControl('',[Validators.required,Validators.minLength(4),Validators.maxLength(30)]),
-    password: new FormControl('',[Validators.minLength(6),Validators.pattern(/[a-zA-Z0-9]*/)]),
-    sameAsShipping: new FormControl()
+    password: new FormControl('',[Validators.minLength(6),Validators.pattern(/[a-zA-Z0-9]*/)])
   });
 
   handleSubmit(){
+    
   }
 
   onNoClick() {

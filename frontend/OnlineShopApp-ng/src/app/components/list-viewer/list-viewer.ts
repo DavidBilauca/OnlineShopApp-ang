@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
-import { Filters, IProduct, IUser } from '../../../types';
+import { Component, input, signal } from '@angular/core';
+import { Filters, IListItem, IProduct, IUser } from '../../../types';
 import { ProductListFormat } from "../product-list-format/product-list-format";
 import { ProductCard } from "../product-card/product-card";
 import { MatIcon } from "@angular/material/icon";
@@ -16,16 +16,16 @@ import { MatAnchor } from '@angular/material/button';
             <h4>Favorites</h4>
           </div>
           <div class="column-sm-1">
-            <p>Showing: {{items().length}} of {{items().length}} products</p>
+            <p>Showing: {{_items().length}} of {{_items().length}} products</p>
           </div>
         </div>
       </div>
         <div class="row">
           @defer (on viewport) {
-            @for (item of items(); track $index) {
+            @for (item of _items(); track $index) {
               @if (emptyFilters() || isFiltered(item)) {
                 <div class="row" style="padding:0;margins:0">
-                  <product-list-format [productInfo]="items()[$index]" [userInfo]="userInfo()"></product-list-format>
+                  <product-list-format [productInfo]="_items()[$index]" [userInfo]="userInfo()" (updateFavList)="handleToggleFav($event)"></product-list-format>
                 </div>
               }
             }
@@ -41,10 +41,20 @@ import { MatAnchor } from '@angular/material/button';
 })
 export class ListViewer {
   items = input.required<Array<IProduct>>();
+  _items = signal<Array<IProduct> >([]);
+
   filters = input.required<Filters>();
   userInfo = input.required<IUser>();
   colStyle: string = 'padding:0;margins:0';
   productViewStyle: ViewStyle = ViewStyle.Grid;
+
+  ngOnInit(){
+    this._items.set(this.items());
+  }
+
+  handleToggleFav(productId:string){
+    this._items.set(this._items().filter((fav)=>fav.id!=productId));
+  }
 
   viewStyleGrid = () => {
     return this.productViewStyle == ViewStyle.Grid;

@@ -5,6 +5,7 @@ import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { ProductAPI } from '../../services/productAPI';
+import { ProductCard } from '../product-card/product-card';
 
 @Component({
   selector: 'product-list-format',
@@ -88,76 +89,14 @@ import { ProductAPI } from '../../services/productAPI';
   `,
   styleUrl: './product-list-format.css',
 })
-export class ProductListFormat {
-  productApi = inject(ProductAPI);
-  productInfo = input.required<IProduct>();
-  userInfo = input.required<IUser>();
-  favorite: string = '';
-  inCart: string = '';
-  inputsLoaded: boolean = false;
-
-  padd0: string = 'padding:0;';
-  border: string = 'border:1px solid;';
-  autoMargins: string = 'margin-left:auto;margin-right:auto;margin-bottom:2rem';
-  autoPadd: string = 'padding:auto;';
+export class ProductListFormat extends ProductCard {
   fitWidth: string = 'width:auto;';
-  center: string = 'padding:auto;';
+  inputsLoaded:boolean = false;
 
   ngOnInit() {
     //console.log("Product list format: "+JSON.stringify(this.productInfo()));
     this.inputsLoaded = true;
   }
 
-  ngOnChanges() {
-    if (this.userInfo().favorites.filter((fav) => fav.id == this.productInfo().id).length > 0) {
-      console.log('Product card: ' + this.productInfo().title + ' is set to fav');
-      this.favorite = 'favorite-set';
-    }
-    if (
-      this.userInfo().shoppingCart.filter((cartItem) => cartItem.productId == this.productInfo().id)
-        .length > 0
-    ) {
-      console.log('Product card: ' + this.productInfo().title + ' is added to cart');
-      this.inCart = 'in-cart';
-    }
-  }
 
-  toggleFavorite() {
-    if (this.userInfo().id == '') {
-      console.log('Sign in to add favorites');
-      return;
-    }
-
-    if (this.favorite == '') this.favorite = 'favorite-set';
-    else this.favorite = '';
-
-    this.productApi.setFavorite(this.productInfo().id, this.userInfo().id).then((result) => {
-      console.log('setFavorite result: ' + result);
-      if (result) this.favorite = 'favorite-set';
-      else this.favorite = '';
-    });
-  }
-
-  toggleCartItem() {
-    if (this.userInfo().id == '') {
-      console.log('Sign in to add products to cart');
-      return;
-    }
-    if (this.inCart == '') this.inCart = 'in-cart';
-    else this.inCart = '';
-    this.productApi.toggleCartItem(this.productInfo().id, this.userInfo().id).then((result) => {
-      console.log('toggleCartItem result: ' + result);
-      if (result) this.inCart = 'in-cart';
-      else this.inCart = '';
-    });
-  }
-
-  addStyles = (args: Array<string>) => {
-    var result = '';
-    args.forEach((arg) => (result = result.concat(arg)));
-    return result;
-  };
-  testStyle = () => {
-    return this.padd0.concat(this.border);
-  };
 }

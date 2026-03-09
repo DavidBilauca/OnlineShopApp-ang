@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { Filters, IListItem, IProduct, IUser } from '../../../types';
 import { ProductListFormat } from '../product-list-format/product-list-format';
 import { ProductCard } from '../product-card/product-card';
@@ -31,21 +31,20 @@ import { ChangeDetectorRef } from '@angular/core';
             <h4>Shopping cart</h4>
           </div>
           <div class="column-sm-1">
-            <p>Showing: {{ items().length }} of {{ items().length }} products</p>
+            <p>Showing: {{ _items().length }} of {{ _items().length }} products</p>
           </div>
         </div>
       </div>
       <div class="row">
         @defer (on viewport; when inputsLoaded) {
-          @for (item of items(); track $index) {
+          @for (item of _items(); track $index) {
             <div class="row" style="padding:0;margins:0">
               <div class="col-lg-10">
                 <product-cart-item
                   [productInfo]="items()[$index].product"
                   [listItemInfo]="items()[$index]"
                   [userInfo]="userInfo()"
-                  (itemToggled)="handleToggleCartItem()"
-                  (refetchUserData)="handleRefetch()"
+                  (updateCartList)="handleToggleCartItem($event)"
                 ></product-cart-item>
               </div>
             </div>
@@ -71,7 +70,8 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class ShoppingCart {
   productsAPI = inject(ProductAPI);
-  items = input.required<Array<IListItem>>();
+  items =  input.required<Array<IListItem>>();
+  _items = signal<Array<IListItem>>([]) ;
 
   refetchUserData = output<void>();
   //inputsLoaded:boolean = false;
@@ -86,23 +86,27 @@ export class ShoppingCart {
 
   ngOnInit() {
     this.inputsLoaded = true;
-    this.items().forEach(item=>console.log("ShoppingCart Item: "+JSON.stringify(item)));
+    this._items.set(this.items());
+    //this.items().forEach(item=>console.log("ShoppingCart Item: "+JSON.stringify(item)));
   }
 
   handleRefetch(){
     this.refetchUserData.emit();
   }
 
-  handleToggleCartItem() {
-    this.cdr.detectChanges();
+  handleToggleCartItem(productId:string) {
+    //this.cdr.detectChanges();
+    this._items.set(this._items().filter(item=>item.product.id!=productId)) ;
   }
+
+
 
   viewStyleGrid = () => {
     return this.productViewStyle == ViewStyle.Grid;
   }; 
 
   calculateTotal(){
-    const total = this.items()
+    const total = this._items()
     .reduce(
       (accumulator,currentVal)=>accumulator+currentVal.product.price*currentVal.quantity,
       0

@@ -13,6 +13,7 @@ import { MatDivider } from '@angular/material/divider';
 import { MatDialog } from '@angular/material/dialog';
 import { BillingInfoModal } from '../dialog-modal/dialog-modal';
 import { UserAPI } from '../../services/userAPI';
+import { ShippingInfoModal } from '../shipping-info-modal/shipping-info-modal';
 
 @Component({
   selector: 'settings',
@@ -87,6 +88,10 @@ import { UserAPI } from '../../services/userAPI';
                 <mat-expansion-panel-header>
                   <mat-panel-title>Delivery (shipping)</mat-panel-title>
                 </mat-expansion-panel-header>
+                <button matButton="filled" (click)="handleAddShipping()">
+                  <mat-icon>add</mat-icon>
+                  Add shipping info
+                </button>
               </mat-expansion-panel>
 
               
@@ -118,6 +123,11 @@ export class Settings {
 
   handleAddBilling() {
     this.dialog.open(BillingInfoModal,{
+      data:this.userInfo()});
+  }
+
+  handleAddShipping(){
+    this.dialog.open(ShippingInfoModal,{
       data:this.userInfo()});
   }
 

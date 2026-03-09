@@ -22,6 +22,7 @@ import { UserAPI } from '../../services/userAPI';
 import { MatDialog } from '@angular/material/dialog';
 import { InfoModal } from '../info-modal/info-modal';
 import { Router } from '@angular/router';
+import { email } from '@angular/forms/signals';
 
 @Component({
   selector: 'product-card',
@@ -113,6 +114,8 @@ export class ProductCard {
   userInfo = input.required<IUser>();
   openProductPage = output<IProduct>();
   refetchUserData = output<void>();
+  updateFavList = output<string>();
+  updateCartList = output<string>();
   detailsToggled:boolean = false;
 
   favorite: string = '';
@@ -167,7 +170,8 @@ export class ProductCard {
       else this.favorite = '';
     });
 
-    this.refetchUserData.emit();
+    // this.refetchUserData.emit();
+    this.updateFavList.emit(this.productInfo().id);
   }
 
   toggleCartItem(){
@@ -182,7 +186,8 @@ export class ProductCard {
       if (result) this.inCart = 'in-cart';
       else this.inCart = '';
     })
-    this.refetchUserData.emit();
+    // this.refetchUserData.emit();
+    this.updateCartList.emit(this.productInfo().id);
   }
 
   handleProductClick(){
