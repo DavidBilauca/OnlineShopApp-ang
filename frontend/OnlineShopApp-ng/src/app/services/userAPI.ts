@@ -62,6 +62,23 @@ export class UserAPI {
     return data as IProduct[];
   }
 
+  async updateUserInfo(userId:string){
+    var data ={};
+    await fetch(this.baseUrl+'/Shopping/updateUser/'+userId,{
+      method:"PUT",
+      headers: {
+        'Content-Type':'application/json',
+      },
+    })
+    .then((response)=>{
+      data = response.json();
+    })
+    .catch((error) => {
+        console.log(error);
+      });
+    return data as IUser;
+  }
+
   async updateBillingInfo(userId:string,billInfo:IBillingInfo){
     var data ={};
     await fetch(this.baseUrl+'/Shopping/addBilling/'+userId,{

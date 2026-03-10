@@ -1,5 +1,7 @@
 package com.onlineshopappang.springshop.Models.UserRelated;
 
+import com.onlineshopappang.springshop.Models.Dbtos.BillingInfoDbto;
+import com.onlineshopappang.springshop.Models.Dbtos.UserDbto;
 import com.onlineshopappang.springshop.Models.ProductRelated.Favorite;
 import com.onlineshopappang.springshop.Models.ShoppingCartRelated.ListItem;
 import com.onlineshopappang.springshop.Models.ShoppingCartRelated.Order;
@@ -26,6 +28,15 @@ public class User {
     public List<ListItem> ShoppingCart;
     public BillingInfo BillingInfo;
     public DeliveryInfo DeliveryInfo;
-    public List<Favorite> Favorites;
+    public List<UUID> Favorites;
     public List<Order> Orders;
+
+    public User(UserDbto user) {
+        Id = user.getId();
+        Username = user.getUsername();
+        Email = user.getEmail();
+        //ShoppingCart = user
+        //BillingInfo = user.ge
+        Favorites = user.getFavorites();
+    }
 }
