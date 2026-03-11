@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BillingInfoModal } from '../dialog-modal/dialog-modal';
 import { UserAPI } from '../../services/userAPI';
 import { ShippingInfoModal } from '../shipping-info-modal/shipping-info-modal';
+import { SettingsList } from "../settings-list/settings-list";
 
 @Component({
   selector: 'settings',
@@ -27,7 +28,8 @@ import { ShippingInfoModal } from '../shipping-info-modal/shipping-info-modal';
     MatButton,
     MatMiniFabButton,
     MatDivider,
-  ],
+    SettingsList
+],
   template: `
     <div class="row">
       <div class="col-lg-1">
@@ -83,6 +85,14 @@ import { ShippingInfoModal } from '../shipping-info-modal/shipping-info-modal';
                   <mat-icon>add</mat-icon>
                   Add billing info
                 </button>
+                @defer (on viewport;when billingInfos.length>0) {
+                  @for(info of billingInfos;track $index){
+                    <settings-list [data]="info" [deleteAction]="nullFunc"></settings-list>
+                    <!-- <span style="height: 2rem;"></span> -->
+                  }
+                } @placeholder {
+                  <p>no billing info added yet</p>
+                }
               </mat-expansion-panel>
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
@@ -117,9 +127,13 @@ import { ShippingInfoModal } from '../shipping-info-modal/shipping-info-modal';
 export class Settings {
   userInfo = input.required<IUser>();
   userApi = inject(UserAPI);
+  billingInfos:IBillingInfo[] = [];
   readonly dialog = inject(MatDialog);
 
 
+  async ngOnInit(){
+    await this.getBillingInfo();
+  }
 
   handleAddBilling() {
     this.dialog.open(BillingInfoModal,{
@@ -135,13 +149,18 @@ export class Settings {
     console.log('edit username');
   }
 
+  async getBillingInfo(){
+    this.userApi.getAllBilling(this.userInfo().id).then(billingInfos=>{
+      this.billingInfos = billingInfos;
+    })
+    
+  }
+
   openDialog():void {
       const dialogRef = this.dialog.open(BillingInfoModal,{data:"add to favorites"});
-      dialogRef.afterClosed().subscribe(result=>{
-        
-      })
     }
 
+    nullFunc(){}
 }
 
 export interface BillingInfoModalConfig {

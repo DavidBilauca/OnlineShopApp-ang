@@ -17,5 +17,9 @@ public interface IBillingInfoCrudRepository extends JpaRepository<BillingInfoDbt
     @Query(value = "select b from BillingInfoDbto b where b.user.id=?1")
     Optional<List<BillingInfoDbto>> findBillingInfoByUserIdByUserId(UUID userId);
 
+    @Modifying
+    @Transactional
+    @Query("update BillingInfoDbto as billing set billing = ?2 where billing.id=?1")
+    public int update(UUID id,BillingInfoDbto newBilling);
 
 }

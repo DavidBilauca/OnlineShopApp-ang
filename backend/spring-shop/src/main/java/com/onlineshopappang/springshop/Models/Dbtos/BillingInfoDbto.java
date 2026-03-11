@@ -1,13 +1,18 @@
 package com.onlineshopappang.springshop.Models.Dbtos;
 
+import com.onlineshopappang.springshop.Models.UserRelated.BillingInfo;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -49,5 +54,19 @@ public class BillingInfoDbto {
     @Column(name = "phone_number", nullable = false, length = 15)
     private String phoneNumber;
 
+
+    public BillingInfoDbto(BillingInfo newBilling) {
+        this.city = newBilling.City;
+        this.country = newBilling.Country;
+        this.county = newBilling.County;
+        this.district = newBilling.District;
+        this.fullName = newBilling.FullName;
+        this.id = newBilling.Id;
+        this.phoneNumber = newBilling.PhoneNumber;
+        this.state = newBilling.State;
+        this.streetAddress = newBilling.StreetAddress;
+        this.user = new UserDbto(newBilling.User);
+        this.zipCode = newBilling.ZipCode;
+    }
 
 }

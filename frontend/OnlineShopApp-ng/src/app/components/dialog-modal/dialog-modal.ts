@@ -73,7 +73,7 @@ import { UserAPI } from '../../services/userAPI';
   </form>
 
   <mat-dialog-actions>
-    <button matButton="filled" [mat-dialog-close]="true">Submit</button>
+    <button matButton="filled" [mat-dialog-close]="true" (click)="handleSubmit()">Submit</button>
     <button matButton="outlined" (click)="onNoClick()">Cancel</button>
   </mat-dialog-actions>
   `,
@@ -145,7 +145,7 @@ export class BillingInfoModal {
 
   handleSubmit(){
     const newBilling:IBillingInfo = {
-      id: '',
+      id: crypto.randomUUID(),
       userId:this.userId,
       fullName:this.dialogForm.value.fullName as string,
       country:this.dialogForm.value.country as string,

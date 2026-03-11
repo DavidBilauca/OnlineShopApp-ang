@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogContent, MatDialogActions, MatDialogRef, MAT_DIALOG_DATA, MatDialogClose } from '@angular/material/dialog';
 import { MatAnchor } from "@angular/material/button";
-import { IUser } from '../../../types';
+import { IDeliveryInfo, IUser } from '../../../types';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { UpperCasePipe } from '@angular/common';
@@ -21,31 +21,31 @@ import { UserAPI } from '../../services/userAPI';
 
     <mat-form-field>
       <mat-label>Country</mat-label>
-      <input matInput #input/>
+      <input matInput #input formControlName="country"/>
     </mat-form-field>
     <mat-form-field>
       <mat-label>State</mat-label>
-      <input matInput #input/>
+      <input matInput #input formControlName="state"/>
     </mat-form-field>
     <mat-form-field>
       <mat-label>County</mat-label>
-      <input matInput #input />
+      <input matInput #input formControlName="county"/>
     </mat-form-field>
     <mat-form-field>
       <mat-label>District</mat-label>
-      <input matInput #input />
+      <input matInput #input formControlName="district"/>
     </mat-form-field>
     <mat-form-field>
       <mat-label>City</mat-label>
-      <input matInput #input />
+      <input matInput #input formControlName="city"/>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Street address</mat-label>
-      <input matInput #input />
+      <input matInput #input formControlName="streetAddress"/>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Zip code</mat-label>
-      <input matInput #input />
+      <input matInput #input formControlName="zipCode"/>
     </mat-form-field>
 
   </form>
@@ -61,14 +61,31 @@ export class ShippingInfoModal {
   readonly dialogRef = inject(MatDialogRef<ShippingInfoModal>);
   readonly data = inject<IUser>(MAT_DIALOG_DATA);
   userApi = inject(UserAPI);
+  userId:string = this.data.id;
   dialogForm = new FormGroup({
-    email: new FormControl('',[Validators.email,Validators.required]),
-    username: new FormControl('',[Validators.required,Validators.minLength(4),Validators.maxLength(30)]),
-    password: new FormControl('',[Validators.minLength(6),Validators.pattern(/[a-zA-Z0-9]*/)])
+    country: new FormControl('',[Validators.required]),
+    county: new FormControl(''),
+    state: new FormControl('',[Validators.required]),
+    district: new FormControl('',),
+    city: new FormControl('',[Validators.required]),
+    streetAddress: new FormControl('',[Validators.required]),
+    zipCode: new FormControl('')
   });
 
   handleSubmit(){
-    
+     const newShipping:IDeliveryInfo = {
+          id: crypto.randomUUID(),
+          userId:this.userId,
+          country:this.dialogForm.value.country as string,
+          state:this.dialogForm.value.state as string,
+          county:this.dialogForm.value.county as string,
+          district:this.dialogForm.value.district as string,
+          city:this.dialogForm.value.city as string,
+          streetAddress:this.dialogForm.value.streetAddress as string,
+          zipCode:this.dialogForm.value.zipCode as string
+        }
+          
+        this.userApi.updateShippingInfo(this.userId,newShipping)
   }
 
   onNoClick() {

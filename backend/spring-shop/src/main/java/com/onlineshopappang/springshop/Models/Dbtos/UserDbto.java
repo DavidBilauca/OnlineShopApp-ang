@@ -1,5 +1,6 @@
 package com.onlineshopappang.springshop.Models.Dbtos;
 
+import com.onlineshopappang.springshop.Models.UserRelated.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -28,5 +29,13 @@ public class UserDbto {
     @Column(name="favorites")
     private ArrayList<UUID> favorites;
 
+    public UserDbto(User user) {
+        this.email = user.Email;
+        this.id = user.Id;
+        this.username = user.Username;
+    }
 
+    public UserDbto() {
+
+    }
 }

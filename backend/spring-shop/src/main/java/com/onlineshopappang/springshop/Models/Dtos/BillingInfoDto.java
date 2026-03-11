@@ -26,6 +26,9 @@ public class BillingInfoDto {
     public String phoneNumber;
     public void PaymentDetails(){}
 
+    public BillingInfoDto() {
+    }
+
     public BillingInfoDto(BillingInfo billing){
         id = billing.Id;
         user = billing.User;

@@ -1,5 +1,6 @@
 package com.onlineshopappang.springshop.Models.Dbtos;
 
+import com.onlineshopappang.springshop.Models.UserRelated.DeliveryInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,5 +44,19 @@ public class DeliveryInfoDbto {
     @Column(name = "zip_code", length = 20)
     private String zipCode;
 
+    public DeliveryInfoDbto(DeliveryInfo newDelivery) {
+        this.city = newDelivery.City;
+        this.country = newDelivery.Country;
+        this.county = newDelivery.County;
+        this.district = newDelivery.District;
+        this.id = newDelivery.Id;
+        this.state = newDelivery.State;
+        this.streetAddress = newDelivery.StreetAddress;
+        this.user = new UserDbto(newDelivery.User);
+        this.zipCode = newDelivery.ZipCode;
+    }
 
+    public DeliveryInfoDbto() {
+
+    }
 }

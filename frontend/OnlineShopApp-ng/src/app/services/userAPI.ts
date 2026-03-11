@@ -62,9 +62,43 @@ export class UserAPI {
     return data as IProduct[];
   }
 
+  async getAllBilling(userId:string){
+    var data = {};
+    await fetch(this.baseUrl+'/User/billingInfo/' + userId, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        data = response.json();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return data as IBillingInfo[];
+  }
+
+  async getAllDelivery(userId:string){
+    var data = {};
+    await fetch(this.baseUrl+'/User/deliveryInfo/' + userId, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        data = response.json();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return data as IDeliveryInfo[];
+  }
+
   async updateUserInfo(userId:string){
     var data ={};
-    await fetch(this.baseUrl+'/Shopping/updateUser/'+userId,{
+    await fetch(this.baseUrl+'/User/update',{
       method:"PUT",
       headers: {
         'Content-Type':'application/json',
@@ -81,7 +115,7 @@ export class UserAPI {
 
   async updateBillingInfo(userId:string,billInfo:IBillingInfo){
     var data ={};
-    await fetch(this.baseUrl+'/Shopping/addBilling/'+userId,{
+    await fetch(this.baseUrl+'/User/billingInfo/update',{
       method:"POST",
       headers: {
         'Content-Type':'application/json',
@@ -99,7 +133,7 @@ export class UserAPI {
 
   async updateShippingInfo(userId:string,shippInfo:IDeliveryInfo){
     var data ={};
-    await fetch(this.baseUrl+'/Shopping/addShipping/'+userId,{
+    await fetch(this.baseUrl+'/User/deliveryInfo/update',{
       method:"POST",
       headers: {
         'Content-Type':'application/json',
